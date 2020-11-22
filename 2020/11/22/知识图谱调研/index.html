@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>知识图谱调研 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="知识图谱调研目录 知识图谱的定义 国内外研究现状 代表性的知识图谱库 知识图谱的架构 知识图谱的构建技术 知识图谱的存储   知识图谱的定义 从学术的角度，知识图谱是结构化的语义知识库，用于以符号形式描述物理世界中的概念及其相互关系。其基本组成单位是“实体－关系－实体”三元组，以及实体及其相关属性－ 值对，实体间通过关系相互联结，构成网状的知识结构。  从实际应用的角度，可以简单地把知识图谱理解成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识图谱调研">
+<meta property="og:url" content="http://example.com/2020/11/22/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="知识图谱调研目录 知识图谱的定义 国内外研究现状 代表性的知识图谱库 知识图谱的架构 知识图谱的构建技术 知识图谱的存储   知识图谱的定义 从学术的角度，知识图谱是结构化的语义知识库，用于以符号形式描述物理世界中的概念及其相互关系。其基本组成单位是“实体－关系－实体”三元组，以及实体及其相关属性－ 值对，实体间通过关系相互联结，构成网状的知识结构。  从实际应用的角度，可以简单地把知识图谱理解成">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p1.png">
+<meta property="og:image" content="http://example.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p2.png">
+<meta property="og:image" content="http://example.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p3.png">
+<meta property="og:image" content="http://example.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p4.png">
+<meta property="og:image" content="http://example.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p5.png">
+<meta property="article:published_time" content="2020-11-22T12:24:28.000Z">
+<meta property="article:modified_time" content="2020-11-22T12:48:05.329Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="调研报告">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-知识图谱调研" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/22/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/" class="article-date">
+  <time datetime="2020-11-22T12:24:28.000Z" itemprop="datePublished">2020-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      知识图谱调研
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="知识图谱调研"><a href="#知识图谱调研" class="headerlink" title="知识图谱调研"></a>知识图谱调研</h2><h4 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h4><ol>
+<li>知识图谱的定义</li>
+<li>国内外研究现状</li>
+<li>代表性的知识图谱库</li>
+<li>知识图谱的架构</li>
+<li>知识图谱的构建技术</li>
+<li>知识图谱的存储</li>
+</ol>
+<hr>
+<h4 id="知识图谱的定义"><a href="#知识图谱的定义" class="headerlink" title="知识图谱的定义"></a>知识图谱的定义</h4><ul>
+<li><p>从学术的角度，知识图谱是结构化的语义知识库，用于以符号形式描述物理世界中的概念及其相互关系。其基本组成单位是“实体－关系－实体”三元组，以及实体及其相关属性－ 值对，实体间通过关系相互联结，构成网状的知识结构。</p>
+</li>
+<li><p>从实际应用的角度，可以简单地把知识图谱理解成多关系图（Multi-relational Graph），其一般包含多种类型的节点和多种类型的边。在知识图谱里，我们通常用”实体（Entity）“来表达图里的节点、用“关系（Relation）”来表达图里的“边”。实体指的是现实世界中的事物，比如人、地名、概念、公司等，关系则用来表达不同实体之间的某种联系，比如人-“居住在”-北京、张三和李四是“朋友”等等。</p>
+</li>
+<li><p>该定义有三方面的含义：</p>
+<ol>
+<li>知识图谱本身是一个具有属性的实体通过关系链接而形成的网状知识库。从图的概念来看，知识图谱是对物理世界的一种符号表达；</li>
+<li>知识图谱的研究价值在于：它是构建在当前Web基础上的一层覆盖网络，知识图谱的目标是在当前网页之间建立概念的链接，从而将互联网上的知识进行整合，成为“知识”；</li>
+<li>知识图谱的应用价值在于，它可以帮助人们准确的锁定自己想要检索的内容，而不必从海量网页中人工过滤。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h4 id="国内外研究现状"><a href="#国内外研究现状" class="headerlink" title="国内外研究现状"></a>国内外研究现状</h4><p>目前，国内外学者对其的研究主要集中于知识图谱的关键技术：</p>
+<ul>
+<li>知识表示；</li>
+<li>知识图谱构建；</li>
+<li>知识图谱应用。</li>
+</ul>
+<ol>
+<li>知识表示的发展过程主要分为三个阶段：</li>
+</ol>
+<ul>
+<li>比较早时期采用符号逻辑的方式；</li>
+<li>2000年以后出现的语义网对知识进行表示的方式，包括RDF、OWL等；</li>
+<li>目前比较流行的采用表示学习方式，将知识学习成低维稠密的向量，通过向量间的关系可以在某种程度上反映知识之间的关系。</li>
+</ul>
+<ol start="2">
+<li><p>知识图谱的构建主要是三个步骤：</p>
+<ul>
+<li><p>知识抽取</p>
+<ul>
+<li>知识抽取的目标就是从数据源中抽取出实体、关系及属性等信息，进而进行下一步的操作，所以这一项工作更准确地说应该叫做信息抽取，因为这一步骤并不能得到我们最终想要的“知识”；</li>
+<li>这一步骤涉及到的主要技术包括：实体抽取、关系抽取以及属性抽取。</li>
+</ul>
+</li>
+<li><p>知识融合</p>
+<ul>
+<li>知识融合过程中，需要对第一步中抽取出的三元组信息进行处理，比如将指向同一类实体的三元组进行合并，或者将同名不同含义的实体进行区分；</li>
+<li>这一步骤涉及的技术是指代消解、实体消歧和知识合并。</li>
+</ul>
+</li>
+<li><p>知识加工</p>
+<ul>
+<li>知识加工是将前两步骤处理后的数据转换为结构化的知识；</li>
+<li>主要包括三方面内容：本体构建，知识推理和质量评估。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>知识图谱的应用主要有三个方向：</p>
+<ul>
+<li>语义搜索，利用知识图谱所具有的良好定义的结构形式，以有向图的方式提供满足用户需求的结构化语义内容；</li>
+<li>知识问答，基于知识库的问答，通过对问句的语义分析，转换成结构化的查询语句，在已有结构化的知识库上获取答案；</li>
+<li>知识驱动的大数据分析与决策。</li>
+</ul>
+</li>
+<li><p>根据覆盖范围而言，知识图谱也可分为：</p>
+<ul>
+<li>开放域通用知识图谱<ul>
+<li>开放通用知识图谱注重广度，强调融合更多的实体，较垂直行业知识图谱而言，其准确度不够高，并且受概念范围的影响，很难借助本体库对公理、规则以及约束条件的支持能力规范其实体、属性、实体间的关系等。</li>
+</ul>
+</li>
+<li>垂直行业知识图谱<ul>
+<li>行业知识图谱通常需要依靠特定行业的数据来构建，具有特定的行业意义。行业知识图谱中，实体的属性与数据模式往往比较丰富，需要考虑到不同的业务场景与使用人员。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="代表性的知识图谱库"><a href="#代表性的知识图谱库" class="headerlink" title="代表性的知识图谱库"></a>代表性的知识图谱库</h4><p><img src="/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p1.png" alt="代表性知识图谱库"></p>
+<hr>
+<h4 id="知识图谱的架构"><a href="#知识图谱的架构" class="headerlink" title="知识图谱的架构"></a>知识图谱的架构</h4><ul>
+<li><p>逻辑架构</p>
+<ul>
+<li><p>所谓逻辑架构，指的是图谱的双层结构：数据层和模式层。</p>
+</li>
+<li><p>在数据层，知识以事实（fact）为单位存储在图数据库中。事实一般以三元组的方式进行描述，例如“实体-关系-实体”、“实体-属性-属性值”，借此，图数据库中所有的数据将组成庞大的关系网络，形成所谓的“图谱”。</p>
+</li>
+<li><p>模式层建立在数据层之上，按照字面意思理解就是：对数据层的知识设置一种过滤模式，从而减少知识的冗余。举个例子，比如一个人可能有两个名字，在数据层，不同的名字可能对应了不同的属性和关系，而模式层就是把这实质上是同一个人的实体及其关系进行融合（知识融合），去除不必要的冗余。</p>
+</li>
+</ul>
+<p><img src="/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p2.png" alt="逻辑架构"></p>
+</li>
+<li><p>技术架构</p>
+<p>知识图谱的整体技术流程如下图所示：</p>
+<p><img src="/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p3.png" alt="知识图谱技术流程图"></p>
+<p>橘色部分代表着知识图谱的构建及迭代过程：知识抽取、知识融合、知识加工。一般人们会把知识图谱的构建分为自顶而下和自底而上两种不同的形式，随着技术的不断成熟，现在大都采用自底而上的方法，即从数据中提取资源模式，通过一定的技术手段，选择其中置信度较高的部分，加入到知识图谱中去。</p>
+</li>
+</ul>
+<hr>
+<h4 id="知识图谱的构建技术"><a href="#知识图谱的构建技术" class="headerlink" title="知识图谱的构建技术"></a>知识图谱的构建技术</h4><p>上文提到，知识图谱的构建及迭代主要是三个步骤，下面就每个步骤进行说明。</p>
+<ol>
+<li><p>知识抽取（Knowledge Extraction）</p>
+<p>知识抽取的目标就是从数据源中抽取出实体、关系及属性等信息，进而进行下一步的操作，所以这一项工作更准确地说应该叫做信息抽取，因为这一步骤并不能得到我们最终想要的“知识”。相应地，这一步骤涉及到的主要技术包括：实体抽取、关系抽取以及属性抽取。</p>
+<ul>
+<li><p>实体抽取</p>
+<p>即所谓的命名实体识别（Named Entity Recognition，NER），指的就是如何从数据，特别是文本数据中准确获得其中的实体信息。实体的类型主要包括三大类七小类：</p>
+<ul>
+<li>实体类（包括人名，地名，机构名）；</li>
+<li>时间类（日期，时间）</li>
+<li>数字类（货币、百分比）</li>
+</ul>
+<p>具体到特定领域，还可以对实体类别进行扩充。</p>
+</li>
+<li><p>关系抽取</p>
+<p>实体抽取获得了图数据库中的节点，那么关系抽取就是获得节点之间的连线的过程。<br>在早期的研究中，关系抽取同样基于规则，但这种方法本身的局限注定基于规则建立模型不是长久之计；后来采用统计机器学习的方法，得到了不错的效果，但需要大量人工标注的语料，这对于特定领域的关系抽取来说，工作量无疑是巨大的；再后来的基于半监督、无监督以及自监督模型，对模型的通用性有了一些提高，但整体来说，由于自然语言的复杂性，这一领域的学者仍然是任重而道远。</p>
+</li>
+<li><p>属性抽取</p>
+<p>如果把实体的属性值看作是一种特殊的实体，那么属性抽取实际上也是一种关系抽取。 百科类网站提供的半结构化数据是通用领域属性抽取研究的主要数据来源，但具体到特定的应用领域，涉及大量的非结构化数据，属性抽取仍然是一个巨大的挑战。</p>
+</li>
+</ul>
+</li>
+<li><p>知识融合（Knowledge Fusion）</p>
+<p>上一步抽取出的三元组信息存入数据库后，具备了初步的“知识”，但这些知识仍然不能直接利用。例如，对于前美国总统奥巴马，我们可能用不同的词来称呼他，在实体识别中这些称呼都被看作是独立的实体，那么我们就应该把这些指向同一类实体的三元组进行合并。再举一个例子，同名同姓的两个不同的人，如何区分他们呢？这就涉及下面的技术。</p>
+<ul>
+<li><p>指代消解</p>
+<p>这个词可能不是很好理解，但理解它所代表的意思即可：消解那些指代不同实体的内容，这一技术就是处理对同一实体的不同语言描述问题（如上文对奥巴马的不同称呼）。利用这一技术，就可以将这些看似不同的实体归纳到一个统一的实体。这一技术本身也具有很多“称呼”：实体对齐，实体匹配，实体同义等。</p>
+</li>
+<li><p>实体消歧</p>
+<p>相比而言，这个词就好理解多了，其作用也简单，就是对具有相同名称的实体进行区分。例如两个人同名，那就通过性别、工作、兴趣爱好等其他属性进行区分。</p>
+</li>
+<li><p>知识合并</p>
+<p>知识合并主要就是从结构化数据或者第三方库中获取知识并融合进图谱的过程。</p>
+</li>
+</ul>
+</li>
+<li><p>知识加工（Knowledge Processing）</p>
+<p>严格来讲，经过前两步骤处理后的数据仍不能称得上是“知识”，只能算是事实表达的集合，要想获得结构化的知识，还需要经过知识加工环节。知识加工主要包括3方面内容： 本体构建，知识推理和质量评估。</p>
+<ul>
+<li><p>本体构建</p>
+<p>本体最早是一个哲学上的概念，在知识图谱上引用本体构建这一技术，目的是对相关领域的知识进行总结提取，确定在该领域内得到共识的术语，然后以格式规范的定义来描述这些内容。可以这样理解，前两阶段提取出来的实体及其属性关系，是本体的具体表现；而本体就是对它们的概括总结。</p>
+</li>
+<li><p>知识推理</p>
+<p>知识推理指的是从已有的知识中推理出新的知识。例如康熙是雍正的父亲，雍正是乾隆的父亲，那么通过康熙和乾隆这两个实体之间通过知识推理，就可以获得他们之间是祖孙关系。</p>
+</li>
+<li><p>质量评估</p>
+<p>顾名思义，质量评估就是对写入知识图谱中的知识做最后的判断，以提高知识库中内容的准确性。</p>
+</li>
+</ul>
+</li>
+<li><p>知识更新（Knowledge Update）</p>
+<p>知识图谱并不是一成不变的，随着人类知识的增加，图谱的内容也要定期进行更新，以满足最新的知识需求。更新的方式有两种，一种是“打补丁”，即增量更新，将新增加的人类知识经过处理加入到知识图谱中；另一种是“推倒重建”，即全局更新，就是从零开始重建新图谱。事实上，无论哪种方法都是一件消耗巨大的工作。</p>
+</li>
+</ol>
+<hr>
+<h4 id="知识图谱的存储"><a href="#知识图谱的存储" class="headerlink" title="知识图谱的存储"></a>知识图谱的存储</h4><p>知识图谱主要有两种存储方式：一种是基于RDF的存储；另一种是基于图数据库的存储。它们之间的区别如下图所示。RDF一个重要的设计原则是数据的易发布、共享，图数据库则把重点放在了高效的图查询和搜索上；此外，RDF以三元组的方式来存储数据而且不包含属性信息，但图数据库一般以属性图为基本的表示形式，所以实体和关系可以包含属性，这就意味着更容易表达现实的业务场景。</p>
+<p><img src="/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p4.png" alt="区别"></p>
+<p>根据最新的统计，图数据库仍然是增长最快的存储系统。相反，关系型数据库的增长基本保持在一个稳定的水平。下图列出了常用的图数据库系统以及他们最新使用情况的排名。 其中Neo4j系统目前仍是使用率最高的图数据库，它拥有活跃的社区，而且系统本身的查询效率高，但唯一的不足就是不支持准分布式；相反，OrientDB和JanusGraph（原Titan）支持分布式，但这些系统相对较新，社区不如Neo4j活跃，这也就意味着使用过程当中不可避免地会遇到一些刺手的问题。如果选择RDF的存储系统，Jena或许一个比较不错的选择。</p>
+<p><img src="/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p5.png" alt="数据库"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/11/22/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/" data-id="ckht4ag560003k8v43tdp2bht" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/" rel="tag">调研报告</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/11/22/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E4%B8%89%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">西瓜书第三章思维导图</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Misc/" rel="tag">Misc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">西瓜书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/" rel="tag">调研报告</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Misc/" style="font-size: 10px;">Misc</a> <a href="/tags/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">西瓜书笔记</a> <a href="/tags/%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/" style="font-size: 10px;">调研报告</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/22/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/">知识图谱调研</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/22/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E4%B8%89%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/">西瓜书第三章思维导图</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/22/Windows%E4%B8%8BGithub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/">Windows下Github+Hexo搭建个人网站</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
