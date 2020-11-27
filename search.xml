@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>命名实体识别（NER）调研</title>
+    <url>/2020/11/27/NER/</url>
+    <content><![CDATA[<p>本文介绍了现有的一些关于命名实体识别技术的研究方法，命名实体识别技术是信息抽取技术的一部分，是很多任务的基础工作。</p>
+<a id="more"></a>
+
+<h3 id="命名实体识别技术调研"><a href="#命名实体识别技术调研" class="headerlink" title="命名实体识别技术调研"></a>命名实体识别技术调研</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>命名实体就是命名实体识别的研究主体，一般包括三大类（实体类、时间类和数字类）和七小类（人名、地名、机构名、时间、日期、货币和百分比）命名实体。</p>
+<p>命名实体识别（Named Entity Recognition，NER）又称专名识别，从早期基于字典和规则的方法，到传统机器学习的方法，再到近年来基于深度学习的各类方法，其研究进展的大概趋势如下图所示。</p>
+<img src="/2020/11/27/NER/p1.png" alt="NER发展趋势" style="zoom:80%;">
+
+<h4 id="基于字典和规则的方法"><a href="#基于字典和规则的方法" class="headerlink" title="基于字典和规则的方法"></a>基于字典和规则的方法</h4><p>基于字典和规则的方法是命名实体识别任务中最古老的方法。利用手工编写的规则，提取特征，比如关键词、指示词、位置词等，收集特征词，并且给每一个规则都赋予一个权值，当规则冲突的时候，选择权值最高的规则进行命名实体类型的判别；但是这些规则往往依赖于具体语言、领域和文本风格，编制过程耗时且难以涵盖所有的语言现象，特别容易产生错误，系统可移植性不好，对于不同的系统需要语言学专家重新书写规则。</p>
+<h4 id="基于传统机器学习的方法"><a href="#基于传统机器学习的方法" class="headerlink" title="基于传统机器学习的方法"></a>基于传统机器学习的方法</h4><p>基于传统机器学习的方法主要包括隐马尔可夫模型（Hidden Markov Model，HMM）、支持向量机（support vector machines，SVM）、条件随机场[1]（Conditional Random Fields，CRF）等。在此类方法中，NER被当作序列标注问题，利用大规模语料来学习出标注模型，从而对句子的各个位置进行标注。隐马尔可夫模型（HMM）认为观测到的句子中的每个词都是相互独立的，而且当前时刻的标注只与前一时刻的标注相关，但实际上，句子中的每个词是存在依赖关系的，且当前时刻的标注应该与前一时刻以及后一时刻的标注都相关联，因此，HMM模型虽然在训练以及识别时的效率更高，但是准确率比较低，效果不够理想；条件随机场（CRF）为命名实体识别提供了一个特征灵活、全局最优的标注框架，能对隐含状态建模，学习状态序列的特点，在标注准确率上有一定优势，但是收敛速度较慢、所需的训练时间也更长。基于统计机器学习的方法中，CRF是使用最广泛的，它的目标函数不仅考虑输入的状态特征函数，而且还包含了标签转移特征函数。在训练时可以使用随机梯度下降法（Stochastic Gradient Descent，SGD）学习模型参数。在已知模型时，给输入序列求预测输出序列即求使目标函数最大化的最优序列，是一个动态规划问题，可以使用Viterbi算法解码来得到最优标签序列。</p>
+<h4 id="基于深度学习的方法"><a href="#基于深度学习的方法" class="headerlink" title="基于深度学习的方法"></a>基于深度学习的方法</h4><p>随着硬件计算能力的发展以及词的分布式表示（word embedding）的提出，神经网络可以有效处理这种序列标注任务：将分词从离散的独热向量（one-hot）表示映射到低维空间中成为稠密的词向量（embedding），随后将句子的embedding序列输入到卷积神经网络（Convolutional Neural Networks，CNN）或循环神经网络（Recurrent Neural Network，RNN）中，用神经网络自动提取特征，归一化指数（Softmax）函数来预测每个分词的标签。这种方法使得模型的训练成为一个端到端的过程，不依赖于特征工程，是一种数据驱动的方法，但网络种类繁多、对参数设置依赖大，模型可解释性差。此外，这种方法的一个缺点是对每个分词打标签的过程是独立的进行，不能直接利用上文已经预测的标签，进而导致预测出的标签序列可能是无效的。因此，学界提出了深度学习模型（DL）+CRF的混合模型做序列标注，在神经网络的输出层接入CRF层来做句子级别的标签预测，使得标注过程不再是对各个分词的独立分类。</p>
+<h4 id="近期工作"><a href="#近期工作" class="headerlink" title="近期工作"></a>近期工作</h4><p>近年来，在基于神经网络结构的NER研究主要集中在三个方面：一是，使用流行的注意力机制[2]（Attention Mechanism）来提高模型效果；二是，针对少量标注训练数据或无标注数据进行的一些研究，其中包括了迁移学习[3]和半监督学习[4]，这也是未来研究的重点。</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1].  Lafferty J, McCallum A, Pereira F C N. Conditional random fields: Probabilistic models for segmenting and labeling sequence data[J]. 2001.</p>
+<p>[2].  Zukov-Gregoric A, Bachrach Y, Minkovsky P, et al. Neural named entity recognition using a self-attention mechanism[C]. 2017 IEEE 29th International Conference on Tools with Artificial Intelligence (ICTAI). IEEE, 2017: 652-656.</p>
+<p>[3].  Beryozkin G, Drori Y, Gilon O, et al. A Joint Named-Entity Recognizer for Heterogeneous Tag-sets Using a Tag Hierarchy[J]. arXiv preprint arXiv:1905.09135, 2019.</p>
+<p>[4].  Peters M E, Ammar W, Bhagavatula C, et al. Semi-supervised sequence tagging with bidirectional language models[J]. arXiv preprint arXiv:1705.00108, 2017.</p>
+]]></content>
+      <tags>
+        <tag>调研报告</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>短文本相似度计算调研</title>
+    <url>/2020/11/27/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/</url>
+    <content><![CDATA[<p>本文是对短文本相似度计算任务的调研报告，简单介绍了目前解决该问题的一些方法。</p>
+<a id="more"></a>
+
+<h3 id="短文本相似度计算调研"><a href="#短文本相似度计算调研" class="headerlink" title="短文本相似度计算调研"></a>短文本相似度计算调研</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>短文本相似度计算，即求解两个短文本之间的相似程度。目前，短文本相似度算法可以分为三大类：无监督相似度计算、有监督相似度计算，以及有监督+无监督的相似度计算。</p>
+<h4 id="无监督相似度计算"><a href="#无监督相似度计算" class="headerlink" title="无监督相似度计算"></a>无监督相似度计算</h4><p>无监督相似度计算，又分为基于词汇重合度的TF-IDF（Term Frequency–Inverse Document Frequency）、BM25、Jaccard、VSM（Vector Space Model）、SimHash等模型，基于浅层语义的主题模型：LDA（Latent Dirichlet Allocation）、PLSA[1]（Probabilistic Latent Semantic Analysis）等，基于语义的编码模型：word to vector、WMD[2]（Word Mover’s Distance）、预训练编码器（如XLNet[3]、BERT[4]、ELMo[5]）等，以及基于以上各种方法的相似度分数的经验加权叠加。无监督方法的好处是不需要训练数据，可以直接通用于任何场景，缺点是准确度一般，常用于冷启动的场景。</p>
+<h4 id="有监督相似度计算"><a href="#有监督相似度计算" class="headerlink" title="有监督相似度计算"></a>有监督相似度计算</h4><p>有监督的方法可以分为基于传统的分类模型，如LR（Logistic regression）、SVM、GBDT[6]（Gradient Boosting Decision Tree）等，以及基于深度神经网络的模型。基于深度神经网络的模型普遍分为两种思路：基于表示的模型与基于交互的模型。基于表示的模型主要基于孪生神经网络[7]（Siamese）结构，“孪生”是通过共享参数而实现的，将两个文本映射到同一空间，再计算相似度，例如DSSM（Deep Structured Semantic Models）、CLSM[8]（Convolutional Latent Semantic Model）、ARC-I[9]（Architecture-I）等等；优点是结构简单，可以用于构建索引等场景，缺点是两个短文本的编码完全独立进行，无法考虑任何短文本内部之间的关联。基于交互的模型为了解决上述问题，将编码的过程加入了短文本内部之间的关联参数矩阵，更好地把握了语义焦点，能对上下文重要性进行更好的建模，例如ARC-II[9]（Architecture-II）、MatchPyramid[10]、MVLSTM[11]（Multi-variable Long Short-Term Memory）等。有监督方法可以在特定的场景下通过有标签数据来定制化相似度模型，从而提高准确率；但是有标签数据的获取成本太大，学习的时间复杂度也很高。</p>
+<h4 id="有监督-无监督的相似度计算"><a href="#有监督-无监督的相似度计算" class="headerlink" title="有监督+无监督的相似度计算"></a>有监督+无监督的相似度计算</h4><p>有监督和无监督的混合方法鉴于无监督学习和有监督学习的优缺点，将它们结合到一起，提高了无监督学习的准确率并且降低了有监督学习的时间成本。这种混合方法其实是一种迁移学习（迁移学习是一种机器学习的方法，指的是一个预训练的模型被重新用在另一个任务中，一般两种任务之间需要有一定的相似性和关联性），随着近年来研究的进行，其效果越来越突显出来，例如2018年google提出来的Bert模型[4]以及2019年google再次提出来的XLNet模型[3]，都在各项自然语言处理任务（包括短文本相似度）上取得了颠覆性的突破。其中，Bert借用了Transformer结构中的encoding部分来对文本进行编码，其基于Self-Attention机制，并引入了Positional Encoding，既能够有效地捕捉文本字符间的位置关系，又能并行计算以提高计算效率，只需要在大量的无监督数据集上进行模型的预训练，并在特定任务集合上做少量的fine-tune，便可以达到一个很不错的效果。当然，Bert的预训练过程也并不是完美无缺的，Bert的预训练语言模型目标函数的计算过程强行做了独立性假设，并且基于随机概率MASK的预训练文本和基于具体任务的整句文本fine-tune的过程，具有明显的不一致性。综上考虑，XLNet被提出，为了解决双向上下文的问题，XLNet引入了排列（permutation）语言模型。排列语言模型在预测时，需要预测目标的位置信息，因此将传统的Self-Attention修改为Two-Stream Self-Attention来捕捉位置信息；XLNet还借鉴了Transformer-XL的优点，它对于很长的上下文的处理是要优于传统的Transformer的。</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1].  Hofmann T. Probabilistic latent semantic analysis[J]. arXiv preprint arXiv:1301.6705, 2013.</p>
+<p>[2].  Kusner M, Sun Y, Kolkin N, et al. From word embeddings to document distances[C]. International conference on machine learning. 2015: 957-966.</p>
+<p>[3].  Yang Z, Dai Z, Yang Y, et al. Xlnet: Generalized autoregressive pretraining for language understanding[C]. Advances in neural information processing systems. 2019: 5753-5763.</p>
+<p>[4].  Devlin J, Chang M W, Lee K, et al. Bert: Pre-training of deep bidirectional transformers for language understanding[J]. arXiv preprint arXiv:1810.04805, 2018.</p>
+<p>[5].  Peters M E, Neumann M, Iyyer M, et al. Deep contextualized word representations[J]. arXiv preprint arXiv:1802.05365, 2018.</p>
+<p>[6].  Ke G, Meng Q, Finley T, et al. Lightgbm: A highly efficient gradient boosting decision tree[C]. Advances in neural information processing systems. 2017: 3146-3154.</p>
+<p>[7].  Chopra S, Hadsell R, LeCun Y. Learning a similarity metric discriminatively, with application to face verification[C]. 2005 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR’05). IEEE, 2005, 1: 539-546.</p>
+<p>[8].  Shen Y, He X, Gao J, et al. A latent semantic model with convolutional-pooling structure for information retrieval[C]. Proceedings of the 23rd ACM international conference on conference on information and knowledge management. 2014: 101-110.</p>
+<p>[9].  Hu B, Lu Z, Li H, et al. Convolutional neural network architectures for matching natural language sentences[C]. Advances in neural information processing systems. 2014: 2042-2050.</p>
+<p>[10].       Pang L, Lan Y, Guo J, et al. Text matching as image recognition[J]. arXiv preprint arXiv:1602.06359, 2016.</p>
+<p>[11].       Wan S, Lan Y, Guo J, et al. A deep architecture for semantic matching with multiple positional sentence representations[J]. arXiv preprint arXiv:1511.08277, 2015.</p>
+]]></content>
+      <tags>
+        <tag>调研报告</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows下Github+Hexo搭建个人网站</title>
     <url>/2020/11/22/Windows%E4%B8%8BGithub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</url>
     <content><![CDATA[<p>Hexo是一款简约的静态博客框架，无广告、依赖少、易于安装使用、方便管理维护，可以生成静态网页并将其托管到Github上，对中文的支持也非常友好。我整理了自己的搭建过程，做了个简单的教程~</p>

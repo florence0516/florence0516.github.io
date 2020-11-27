@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文是对短文本相似度计算任务的调研报告，简单介绍了目前解决该问题的一些方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="短文本相似度计算调研">
+<meta property="og:url" content="http://example.com/2020/11/27/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/index.html">
+<meta property="og:site_name" content="Florence&#39;s Blog">
+<meta property="og:description" content="本文是对短文本相似度计算任务的调研报告，简单介绍了目前解决该问题的一些方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-27T06:46:25.000Z">
+<meta property="article:modified_time" content="2020-11-27T07:20:14.889Z">
+<meta property="article:author" content="Florence">
+<meta property="article:tag" content="调研报告">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/11/27/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>短文本相似度计算调研 | Florence's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Florence's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/27/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.JPG">
+      <meta itemprop="name" content="Florence">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Florence's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          短文本相似度计算调研
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-27 14:46:25 / 修改时间：15:20:14" itemprop="dateCreated datePublished" datetime="2020-11-27T14:46:25+08:00">2020-11-27</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文是对短文本相似度计算任务的调研报告，简单介绍了目前解决该问题的一些方法。</p>
+<a id="more"></a>
+
+<h3 id="短文本相似度计算调研"><a href="#短文本相似度计算调研" class="headerlink" title="短文本相似度计算调研"></a>短文本相似度计算调研</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>短文本相似度计算，即求解两个短文本之间的相似程度。目前，短文本相似度算法可以分为三大类：无监督相似度计算、有监督相似度计算，以及有监督+无监督的相似度计算。</p>
+<h4 id="无监督相似度计算"><a href="#无监督相似度计算" class="headerlink" title="无监督相似度计算"></a>无监督相似度计算</h4><p>无监督相似度计算，又分为基于词汇重合度的TF-IDF（Term Frequency–Inverse Document Frequency）、BM25、Jaccard、VSM（Vector Space Model）、SimHash等模型，基于浅层语义的主题模型：LDA（Latent Dirichlet Allocation）、PLSA[1]（Probabilistic Latent Semantic Analysis）等，基于语义的编码模型：word to vector、WMD[2]（Word Mover’s Distance）、预训练编码器（如XLNet[3]、BERT[4]、ELMo[5]）等，以及基于以上各种方法的相似度分数的经验加权叠加。无监督方法的好处是不需要训练数据，可以直接通用于任何场景，缺点是准确度一般，常用于冷启动的场景。</p>
+<h4 id="有监督相似度计算"><a href="#有监督相似度计算" class="headerlink" title="有监督相似度计算"></a>有监督相似度计算</h4><p>有监督的方法可以分为基于传统的分类模型，如LR（Logistic regression）、SVM、GBDT[6]（Gradient Boosting Decision Tree）等，以及基于深度神经网络的模型。基于深度神经网络的模型普遍分为两种思路：基于表示的模型与基于交互的模型。基于表示的模型主要基于孪生神经网络[7]（Siamese）结构，“孪生”是通过共享参数而实现的，将两个文本映射到同一空间，再计算相似度，例如DSSM（Deep Structured Semantic Models）、CLSM[8]（Convolutional Latent Semantic Model）、ARC-I[9]（Architecture-I）等等；优点是结构简单，可以用于构建索引等场景，缺点是两个短文本的编码完全独立进行，无法考虑任何短文本内部之间的关联。基于交互的模型为了解决上述问题，将编码的过程加入了短文本内部之间的关联参数矩阵，更好地把握了语义焦点，能对上下文重要性进行更好的建模，例如ARC-II[9]（Architecture-II）、MatchPyramid[10]、MVLSTM[11]（Multi-variable Long Short-Term Memory）等。有监督方法可以在特定的场景下通过有标签数据来定制化相似度模型，从而提高准确率；但是有标签数据的获取成本太大，学习的时间复杂度也很高。</p>
+<h4 id="有监督-无监督的相似度计算"><a href="#有监督-无监督的相似度计算" class="headerlink" title="有监督+无监督的相似度计算"></a>有监督+无监督的相似度计算</h4><p>有监督和无监督的混合方法鉴于无监督学习和有监督学习的优缺点，将它们结合到一起，提高了无监督学习的准确率并且降低了有监督学习的时间成本。这种混合方法其实是一种迁移学习（迁移学习是一种机器学习的方法，指的是一个预训练的模型被重新用在另一个任务中，一般两种任务之间需要有一定的相似性和关联性），随着近年来研究的进行，其效果越来越突显出来，例如2018年google提出来的Bert模型[4]以及2019年google再次提出来的XLNet模型[3]，都在各项自然语言处理任务（包括短文本相似度）上取得了颠覆性的突破。其中，Bert借用了Transformer结构中的encoding部分来对文本进行编码，其基于Self-Attention机制，并引入了Positional Encoding，既能够有效地捕捉文本字符间的位置关系，又能并行计算以提高计算效率，只需要在大量的无监督数据集上进行模型的预训练，并在特定任务集合上做少量的fine-tune，便可以达到一个很不错的效果。当然，Bert的预训练过程也并不是完美无缺的，Bert的预训练语言模型目标函数的计算过程强行做了独立性假设，并且基于随机概率MASK的预训练文本和基于具体任务的整句文本fine-tune的过程，具有明显的不一致性。综上考虑，XLNet被提出，为了解决双向上下文的问题，XLNet引入了排列（permutation）语言模型。排列语言模型在预测时，需要预测目标的位置信息，因此将传统的Self-Attention修改为Two-Stream Self-Attention来捕捉位置信息；XLNet还借鉴了Transformer-XL的优点，它对于很长的上下文的处理是要优于传统的Transformer的。</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1].  Hofmann T. Probabilistic latent semantic analysis[J]. arXiv preprint arXiv:1301.6705, 2013.</p>
+<p>[2].  Kusner M, Sun Y, Kolkin N, et al. From word embeddings to document distances[C]. International conference on machine learning. 2015: 957-966.</p>
+<p>[3].  Yang Z, Dai Z, Yang Y, et al. Xlnet: Generalized autoregressive pretraining for language understanding[C]. Advances in neural information processing systems. 2019: 5753-5763.</p>
+<p>[4].  Devlin J, Chang M W, Lee K, et al. Bert: Pre-training of deep bidirectional transformers for language understanding[J]. arXiv preprint arXiv:1810.04805, 2018.</p>
+<p>[5].  Peters M E, Neumann M, Iyyer M, et al. Deep contextualized word representations[J]. arXiv preprint arXiv:1802.05365, 2018.</p>
+<p>[6].  Ke G, Meng Q, Finley T, et al. Lightgbm: A highly efficient gradient boosting decision tree[C]. Advances in neural information processing systems. 2017: 3146-3154.</p>
+<p>[7].  Chopra S, Hadsell R, LeCun Y. Learning a similarity metric discriminatively, with application to face verification[C]. 2005 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR’05). IEEE, 2005, 1: 539-546.</p>
+<p>[8].  Shen Y, He X, Gao J, et al. A latent semantic model with convolutional-pooling structure for information retrieval[C]. Proceedings of the 23rd ACM international conference on conference on information and knowledge management. 2014: 101-110.</p>
+<p>[9].  Hu B, Lu Z, Li H, et al. Convolutional neural network architectures for matching natural language sentences[C]. Advances in neural information processing systems. 2014: 2042-2050.</p>
+<p>[10].       Pang L, Lan Y, Guo J, et al. Text matching as image recognition[J]. arXiv preprint arXiv:1602.06359, 2016.</p>
+<p>[11].       Wan S, Lan Y, Guo J, et al. A deep architecture for semantic matching with multiple positional sentence representations[J]. arXiv preprint arXiv:1511.08277, 2015.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/" rel="tag"><i class="fa fa-tag"></i> 调研报告</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/27/NER/" rel="prev" title="命名实体识别（NER）调研">
+      <i class="fa fa-chevron-left"></i> 命名实体识别（NER）调研
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%AD%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E8%B0%83%E7%A0%94"><span class="nav-number">1.</span> <span class="nav-text">短文本相似度计算调研</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-number">1.2.</span> <span class="nav-text">无监督相似度计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E7%9B%91%E7%9D%A3%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-number">1.3.</span> <span class="nav-text">有监督相似度计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E7%9B%91%E7%9D%A3-%E6%97%A0%E7%9B%91%E7%9D%A3%E7%9A%84%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-number">1.4.</span> <span class="nav-text">有监督+无监督的相似度计算</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Florence"
+      src="/images/avatar.JPG">
+  <p class="site-author-name" itemprop="name">Florence</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Florence</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">14k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">13 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
