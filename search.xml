@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Bert模型是否适用于文本相似度计算任务</title>
+    <url>/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/</url>
+    <content><![CDATA[<p>随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。</p>
+<a id="more"></a>
+
+<h3 id="Bert模型是否适用于文本相似度计算任务"><a href="#Bert模型是否适用于文本相似度计算任务" class="headerlink" title="Bert模型是否适用于文本相似度计算任务"></a>Bert模型是否适用于文本相似度计算任务</h3><p>先说结论：我的这个文本相似度计算任务是通过网络爬虫获取的数据，是没有相似度标签的（比如0/1表示不相似/相似），是无监督训练。对于这种情况，不能够通过fine-tune（指的是用别人训练好的模型，即预训练模型，加上我们自己的数据，来训练新的模型）进行微调，用Bert提取句向量再通过余弦函数计算相似度的效果并不好甚至不如用词嵌入模型Glove的效果好。</p>
+<p>本文主要参考了2019年8月底发表在EMNLP会议上的一篇论文：</p>
+<blockquote>
+<p>Reimers N, Gurevych I. Sentence-bert: Sentence embeddings using siamese bert-networks[J]. arXiv preprint arXiv:1908.10084, 2019.</p>
+</blockquote>
+<p>论文中指出随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型均不适合语义相似度搜索，也不适合非监督任务。</p>
+<p>解决聚类和语义相似度计算的一种常见方法是将每个句子映射到一个向量空间，使得语义相似的句子很接近。有人会尝试将整个句子输入预训练模型中，得到该句的句向量，然后作为句子的句向量表示，但是在这篇论文中指出这样得到的句向量表达语义信息的能力并不好，也就是说，两个相似的句子，得到的句向量可能会有很大的差别。</p>
+<p>文中还列出了对比实验结果，这里我们主要关注<strong>无监督</strong>训练结果：</p>
+<h6 id="无监督训练"><a href="#无监督训练" class="headerlink" title="无监督训练"></a>无监督训练</h6><ul>
+<li><p>文中的评测采用的是STS 2012-2016五年的任务数据、STS benchmark数据(2017年构建)、SICK-Relatedness数据，这些数据集都是标好label的句子对，label表示句子之间的相互关系，范围为0~5（0是没什么关系，5表示句子非常相近）。</p>
+</li>
+<li><p>无监督评测不采用这些数据集的任何训练数据，直接用训练好的模型得到句向量+余弦函数来计算句子间的相似度，然后通过斯皮尔曼等级相关系数来衡量模型的优劣。实验结果如下：</p>
+<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png" alt="论文结果"></p>
+<p>结果显示直接采用BERT的输出结果，效果并不好，甚至不如GloVe嵌入向量的效果好；后两栏表示采用本文的孪生网络在NLI数据集上fine-tune后的模型效果，会明显要好很多，但是SBERT和SRoBERTa差异不大。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>CLS和avg是本文尝试用Bert模型得到句向量的不同方法：CLS是以第一个特征位置向量作为句向量；avg是取输出层的所有字向量的平均值作为句向量。</li>
+<li>InferSent是一种句子embeddings方法，它为英语句子提供语理解。</li>
+<li>Universal Sentence Encoder：通用句子编码器。</li>
+<li>base/large：是Bert模型的两种类型，一个是12层Transformer，一个是24层Transformer。</li>
+</ul>
+</li>
+</ul>
+<h6 id="有监督训练"><a href="#有监督训练" class="headerlink" title="有监督训练"></a>有监督训练</h6><ul>
+<li><p>但另一方面，如果是有监督训练，经过fine-tune，预训练模型的效果都有很大的提升，其中Bert达到了最好的效果：</p>
+<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C2.png" alt="论文结果2"></p>
+<ul>
+<li>有监督STS数据集采用的是STS benchmark（简称STSb）数据集，就是上面提到的2017年抽取构建的，是当前比较流行的有监督STS数据集。它主要来自三个方面：字幕、新闻、论坛，包含8,628个句子对，训练集5,749，验证集1,500，测试集1,379。BERT将句子对同时输入网络，最后再接一个简单的回归模型作为输出，目前在此数据集上取得了最好的效果。</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>文本相似度计算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>命名实体识别（NER）调研</title>
     <url>/2020/11/27/NER/</url>
     <content><![CDATA[<p>本文介绍了现有的一些关于命名实体识别技术的研究方法，命名实体识别技术是信息抽取技术的一部分，是很多任务的基础工作。</p>
@@ -24,29 +66,109 @@
       </tags>
   </entry>
   <entry>
-    <title>短文本相似度计算调研</title>
-    <url>/2020/11/27/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/</url>
-    <content><![CDATA[<p>本文是对短文本相似度计算任务的调研报告，简单介绍了目前解决该问题的一些方法。</p>
+    <title>命名实体识别任务中HMM、CRF、Bi-LSTM+CRF模型详解</title>
+    <url>/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>本文主要从宏观意义上解释HMM、CRF和Bi-LSTM+CRF模型的含义，并没有涉及到复杂的公式推导。如果说了解一个算法分为两步：会其意、知其形，那我们这篇文章主要是在说第一点，但做到这一点，恰恰是对于我们真正理解并会用一个模型最重要的。</p>
 <a id="more"></a>
 
-<h3 id="短文本相似度计算调研"><a href="#短文本相似度计算调研" class="headerlink" title="短文本相似度计算调研"></a>短文本相似度计算调研</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>短文本相似度计算，即求解两个短文本之间的相似程度。目前，短文本相似度算法可以分为三大类：无监督相似度计算、有监督相似度计算，以及有监督+无监督的相似度计算。</p>
-<h4 id="无监督相似度计算"><a href="#无监督相似度计算" class="headerlink" title="无监督相似度计算"></a>无监督相似度计算</h4><p>无监督相似度计算，又分为基于词汇重合度的TF-IDF（Term Frequency–Inverse Document Frequency）、BM25、Jaccard、VSM（Vector Space Model）、SimHash等模型，基于浅层语义的主题模型：LDA（Latent Dirichlet Allocation）、PLSA[1]（Probabilistic Latent Semantic Analysis）等，基于语义的编码模型：word to vector、WMD[2]（Word Mover’s Distance）、预训练编码器（如XLNet[3]、BERT[4]、ELMo[5]）等，以及基于以上各种方法的相似度分数的经验加权叠加。无监督方法的好处是不需要训练数据，可以直接通用于任何场景，缺点是准确度一般，常用于冷启动的场景。</p>
-<h4 id="有监督相似度计算"><a href="#有监督相似度计算" class="headerlink" title="有监督相似度计算"></a>有监督相似度计算</h4><p>有监督的方法可以分为基于传统的分类模型，如LR（Logistic regression）、SVM、GBDT[6]（Gradient Boosting Decision Tree）等，以及基于深度神经网络的模型。基于深度神经网络的模型普遍分为两种思路：基于表示的模型与基于交互的模型。基于表示的模型主要基于孪生神经网络[7]（Siamese）结构，“孪生”是通过共享参数而实现的，将两个文本映射到同一空间，再计算相似度，例如DSSM（Deep Structured Semantic Models）、CLSM[8]（Convolutional Latent Semantic Model）、ARC-I[9]（Architecture-I）等等；优点是结构简单，可以用于构建索引等场景，缺点是两个短文本的编码完全独立进行，无法考虑任何短文本内部之间的关联。基于交互的模型为了解决上述问题，将编码的过程加入了短文本内部之间的关联参数矩阵，更好地把握了语义焦点，能对上下文重要性进行更好的建模，例如ARC-II[9]（Architecture-II）、MatchPyramid[10]、MVLSTM[11]（Multi-variable Long Short-Term Memory）等。有监督方法可以在特定的场景下通过有标签数据来定制化相似度模型，从而提高准确率；但是有标签数据的获取成本太大，学习的时间复杂度也很高。</p>
-<h4 id="有监督-无监督的相似度计算"><a href="#有监督-无监督的相似度计算" class="headerlink" title="有监督+无监督的相似度计算"></a>有监督+无监督的相似度计算</h4><p>有监督和无监督的混合方法鉴于无监督学习和有监督学习的优缺点，将它们结合到一起，提高了无监督学习的准确率并且降低了有监督学习的时间成本。这种混合方法其实是一种迁移学习（迁移学习是一种机器学习的方法，指的是一个预训练的模型被重新用在另一个任务中，一般两种任务之间需要有一定的相似性和关联性），随着近年来研究的进行，其效果越来越突显出来，例如2018年google提出来的Bert模型[4]以及2019年google再次提出来的XLNet模型[3]，都在各项自然语言处理任务（包括短文本相似度）上取得了颠覆性的突破。其中，Bert借用了Transformer结构中的encoding部分来对文本进行编码，其基于Self-Attention机制，并引入了Positional Encoding，既能够有效地捕捉文本字符间的位置关系，又能并行计算以提高计算效率，只需要在大量的无监督数据集上进行模型的预训练，并在特定任务集合上做少量的fine-tune，便可以达到一个很不错的效果。当然，Bert的预训练过程也并不是完美无缺的，Bert的预训练语言模型目标函数的计算过程强行做了独立性假设，并且基于随机概率MASK的预训练文本和基于具体任务的整句文本fine-tune的过程，具有明显的不一致性。综上考虑，XLNet被提出，为了解决双向上下文的问题，XLNet引入了排列（permutation）语言模型。排列语言模型在预测时，需要预测目标的位置信息，因此将传统的Self-Attention修改为Two-Stream Self-Attention来捕捉位置信息；XLNet还借鉴了Transformer-XL的优点，它对于很长的上下文的处理是要优于传统的Transformer的。</p>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1].  Hofmann T. Probabilistic latent semantic analysis[J]. arXiv preprint arXiv:1301.6705, 2013.</p>
-<p>[2].  Kusner M, Sun Y, Kolkin N, et al. From word embeddings to document distances[C]. International conference on machine learning. 2015: 957-966.</p>
-<p>[3].  Yang Z, Dai Z, Yang Y, et al. Xlnet: Generalized autoregressive pretraining for language understanding[C]. Advances in neural information processing systems. 2019: 5753-5763.</p>
-<p>[4].  Devlin J, Chang M W, Lee K, et al. Bert: Pre-training of deep bidirectional transformers for language understanding[J]. arXiv preprint arXiv:1810.04805, 2018.</p>
-<p>[5].  Peters M E, Neumann M, Iyyer M, et al. Deep contextualized word representations[J]. arXiv preprint arXiv:1802.05365, 2018.</p>
-<p>[6].  Ke G, Meng Q, Finley T, et al. Lightgbm: A highly efficient gradient boosting decision tree[C]. Advances in neural information processing systems. 2017: 3146-3154.</p>
-<p>[7].  Chopra S, Hadsell R, LeCun Y. Learning a similarity metric discriminatively, with application to face verification[C]. 2005 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR’05). IEEE, 2005, 1: 539-546.</p>
-<p>[8].  Shen Y, He X, Gao J, et al. A latent semantic model with convolutional-pooling structure for information retrieval[C]. Proceedings of the 23rd ACM international conference on conference on information and knowledge management. 2014: 101-110.</p>
-<p>[9].  Hu B, Lu Z, Li H, et al. Convolutional neural network architectures for matching natural language sentences[C]. Advances in neural information processing systems. 2014: 2042-2050.</p>
-<p>[10].       Pang L, Lan Y, Guo J, et al. Text matching as image recognition[J]. arXiv preprint arXiv:1602.06359, 2016.</p>
-<p>[11].       Wan S, Lan Y, Guo J, et al. A deep architecture for semantic matching with multiple positional sentence representations[J]. arXiv preprint arXiv:1511.08277, 2015.</p>
+<h3 id="一、命名实体识别技术中的HMM"><a href="#一、命名实体识别技术中的HMM" class="headerlink" title="一、命名实体识别技术中的HMM"></a>一、命名实体识别技术中的HMM</h3><p><strong>隐马尔可夫模型</strong>（Hidden Markov Model，HMM）是统计模型，它用来描述从可观察的参数中确定该过程的隐含参数。在命名实体识别（NER）技术中，就是求观察序列（文本）的背后最可能的实体类别标注序列。</p>
+<h4 id="1-例子引入"><a href="#1-例子引入" class="headerlink" title="1. 例子引入"></a>1. 例子引入</h4><p>假设我手里有三个不同的骰子。第一个骰子是我们平常见的骰子（称这个骰子为D6），6个面，每个面（1，2，3，4，5，6）出现的概率是1/6。第二个骰子是个四面体（称这个骰子为D4），每个面（1，2，3，4）出现的概率是1/4。第三个骰子有八个面（称这个骰子为D8），每个面（1，2，3，4，5，6，7，8）出现的概率是1/8。</p>
+<p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/%E9%AA%B0%E5%AD%90.png" alt="骰子示例"></p>
+<p>假设我们开始掷骰子，我们先从三个骰子里挑一个，挑到每一个骰子的概率都是1/3。然后我们掷骰子，得到一个数字，1，2，3，4，5，6，7，8中的一个。不停的重复上述过程，我们会得到一串数字，每个数字都是1，2，3，4，5，6，7，8中的一个。例如我们可能得到这么一串数字（掷骰子10次）：1 6 3 5 2 7 3 5 2 4。这串数字叫做可见状态链。但是在隐马尔可夫模型中，我们不仅仅有这么一串可见状态链，还有一串隐含状态链。在这个例子里，这串隐含状态链就是你用的骰子的序列。比如，隐含状态链有可能是：D6 D8 D8 D6 D4 D8 D6 D6 D4 D8。</p>
+<p>一般来说，HMM中说到的马尔可夫链其实是指隐含状态链，因为隐含状态（骰子）之间存在转换概率（transition probability）。在我们这个例子里，D6的下一个状态是D4，D6，D8的概率都是1/3。D4，D8的下一个状态是D4，D6，D8的转换概率也都一样是1/3。这样设定是为了最开始容易说清楚，但是我们其实是可以随意设定转换概率的。比如，我们可以这样定义，D6后面不能接D4，D6后面是D6的概率是0.9，是D8的概率是0.1。这样就是一个新的HMM。</p>
+<p>同样的，尽管可见状态之间没有转换概率，但是隐含状态和可见状态之间有一个概率叫做输出概率（emission probability）。就我们的例子来说，六面骰（D6）产生1的输出概率是1/6。产生2，3，4，5，6的概率也都是1/6。我们同样可以对输出概率进行其他定义。比如，我有一个被赌场动过手脚的六面骰子，掷出来是1的概率更大，是1/2，掷出来是2，3，4，5，6的概率是1/10。</p>
+<p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="隐马尔可夫模型示意图"></p>
+<p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3%5C%E9%9A%90%E5%90%AB%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="隐含状态转换关系示意图"></p>
+<p>其实对于HMM来说，如果提前知道所有隐含状态之间的转换概率和所有隐含状态到所有可见状态之间的输出概率，做模拟是相当容易的。但是应用HMM模型时候呢，往往是缺失了一部分信息的，有时候你知道骰子有几种，每种骰子是什么，但是不知道掷出来的骰子序列；有时候你只是看到了很多次掷骰子的结果，剩下的什么都不知道。如果应用算法去估计这些缺失的信息，就成了一个很重要的问题。</p>
+<h4 id="2-NER中的HMM"><a href="#2-NER中的HMM" class="headerlink" title="2. NER中的HMM"></a>2. NER中的HMM</h4><p>由上述例子可以看出隐马尔科夫模型包含5个基本元素：隐含状态的有限集合、观察值的有限集合、隐含状态的转移概率矩阵、隐含状态输出观测值的输出概率矩阵以及一个初始概率矩阵。</p>
+<p>用隐马尔科夫模型做命名实体识别（NER），其实就是根据输入的一系列单词，去生成其背后的标注，从而得到实体。下表是结合NER任务对隐马尔科夫模型的5个基本元素做的说明：</p>
+<table>
+<thead>
+<tr>
+<th align="center">HMM基本元素</th>
+<th align="center">NER任务中的具体解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">隐含状态的有限集合</td>
+<td align="center">每一个词语背后的标注</td>
+</tr>
+<tr>
+<td align="center">观察值的有限集合</td>
+<td align="center">每一个词语本身</td>
+</tr>
+<tr>
+<td align="center">隐含状态转移概率矩阵</td>
+<td align="center">某一个标注转移到下一个标注的概率</td>
+</tr>
+<tr>
+<td align="center">输出概率矩阵</td>
+<td align="center">在某个标注下，生成某个词的概率</td>
+</tr>
+<tr>
+<td align="center">初始概率矩阵</td>
+<td align="center">每一个标注的初始化概率</td>
+</tr>
+</tbody></table>
+<p>以上的这些元素都可以从现有的训练语料集中统计出来。最后，根据这些统计值，应用维特比（viterbi）算法（就是求解HMM上的最大概率的算法），就可以算出词语序列背后的标注序列，从而从标注序列中提取出实体块。</p>
+<p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/HMM.png" alt="HMM"></p>
+<p>上图是一个简单的隐马尔科夫模型示例，X序列就是就是NER任务中的文本序列，yi就代表了每个隐含状态，即NER任务中的实体类别标注序列。</p>
+<p>可以看出，隐马尔科夫模型存在两个假设：一是输出观察值之间严格独立，二是状态转移过程中当前状态只与前一状态有关。也就是说，在命名实体识别的场景下，隐马尔科夫模型认为观测到的句子中的每个词都是相互独立的，而且当前时刻的标注只与前一时刻的标注相关。</p>
+<p>但实际上，命名实体识别往往需要更多的特征，比如词性，词的上下文等等，而且当前时刻的标注应该与前一时刻以及后一时刻的标注都相关联。因此由于这两个假设的存在，显然HMM模型在解决命名实体识别的问题上是存在缺陷的。</p>
+<h3 id="二、命名实体识别技术中的CRF"><a href="#二、命名实体识别技术中的CRF" class="headerlink" title="二、命名实体识别技术中的CRF"></a>二、命名实体识别技术中的CRF</h3><p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/CRF.png" alt="CRF"></p>
+<p>上图给出简单的条件随机场（CRF）模型示例，可以看出，条件随机场是一种无向图模型。</p>
+<p>条件随机场CRF针对HMM模型中存在的不足，引入<strong>自定义</strong>的特征函数，不仅可以表达观测之间的依赖，还可表示当前观测与前后多个状态之间的复杂依赖，可以有效克服HMM模型面临的问题。</p>
+<p>一个特征函数可以表示为 <img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3%5C%E7%89%B9%E5%BE%81%E5%87%BD%E6%95%B0.png" alt="特征函数"> ，其中 X 表示输入序列， i 为当前的位置，yi 是当前隐含状态，y_{i-1} 表示前一个隐含状态，此时这个特征函数的表示含义与HMM中的转移概率含义是一致的，但事实上它可以有更丰富的表达。</p>
+<p>特征方程的存在允许CRF有十分自由的特征表达， <img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3%5C%E5%85%AC%E5%BC%8F1.png" alt="公式1"> 也可以是 <img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3%5C%E5%85%AC%E5%BC%8F2.png" alt="公式2">。这样特征函数就可以表示当前的隐含状态与任意一个观测状态或者任意一个隐含状态甚至未来的某个隐含状态的关系。</p>
+<p>但上述两个方法（HMM、CRF）是基于统计学习的方法，需要人为地从数据集中经过统计得到特征规律（转移概率或输出概率），人工工作量较大、速度比较慢。</p>
+<h3 id="三、命名实体识别技术中的Bi-LSTM-CRF混合模型"><a href="#三、命名实体识别技术中的Bi-LSTM-CRF混合模型" class="headerlink" title="三、命名实体识别技术中的Bi-LSTM+CRF混合模型"></a>三、命名实体识别技术中的Bi-LSTM+CRF混合模型</h3><p>基于深度学习的方法可以将原本如CRF等模型与深度学习神经网络结合起来，其速度足够快，准确率也高，且不需要人为设定特征，能够从原始数据中自主的学习，找到更深层次和更加抽象的特征，是目前解决命名实体识别任务的主流方法，其中最常用的就是BiLSTM+CRF的混合模型。</p>
+<p>该模型分为两层：一层Bi-LSTM层、一层CRF层。下图是它的结构图。</p>
+<p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/BILSTM+CRF.png" alt="BILSTM+CRF结构图"></p>
+<h4 id="1-Bi-LSTM神经网络模型"><a href="#1-Bi-LSTM神经网络模型" class="headerlink" title="1. Bi-LSTM神经网络模型"></a>1. Bi-LSTM神经网络模型</h4><p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/Bi-LSTM.png" alt="Bi-LSTM"></p>
+<ul>
+<li><p>目的：</p>
+<p>通过一个前向LSTM网络和一个后向LSTM网络分别从前和后两个方向对句子进行建模，同时考虑了词语的前后文信息，能够更好的捕捉观测序列之间的依赖关系，使其在命名实体识别任务中可以取得更好的效果。</p>
+</li>
+<li><p>输入：句子中每个单词的词向量；</p>
+</li>
+<li><p>输出：每个隐含状态的输出分数，也就是该单词对应各个实体类别的分数（分数越高表示此类别的概率越大）。如w0节点的输出表示：是“B-Person”的分数为1.5，是“I-Person”的分数为0.9，是“B-Organization”的分数为0.1，是“I-Organization”的分数为0.08，是“O”的分数为0.05。</p>
+</li>
+</ul>
+<h4 id="2-CRF层"><a href="#2-CRF层" class="headerlink" title="2. CRF层"></a>2. CRF层</h4><p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/Bi-lstm+crf.png" alt="Bi-lstm+crf"></p>
+<ul>
+<li><p>输入：Bi-LSTM层输出的隐含状态输出分数；</p>
+</li>
+<li><p>输出：所有可能的标注序列的得分。</p>
+</li>
+<li><p>目的：</p>
+<p>在训练的过程中，学习隐含状态（实体类别）之间的转移分数矩阵。换句话说，就是对最终的预测结果添加一些限制来确保结果是有效的。转移分数矩阵示例如下：</p>
+<p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/%E8%BD%AC%E7%A7%BB%E5%88%86%E6%95%B0%E7%9F%A9%E9%98%B5.png" alt="转移分数矩阵"></p>
+<p>我们可以看到转移分数矩阵可以学到一些有用的限制条件：</p>
+<ul>
+<li>句子的开始应该是 “B-“ 或 “O”,而不是 “I-“（从START到I-Person或I-Organization的得分非常低）</li>
+<li>“B-label1 I-label2 I-label3 I-…”, 在这个模式中, label1, label2, label3 应该是同一个实体label.例如 “B-Person I-Person”是可以的（例如 “B-Organization”到“I-Person” 仅仅是0.0003）</li>
+<li>“O I-label” 不合法（t_{O,I-PERSON}的得分非常低）</li>
+</ul>
+<p>那么如何得到转移分数矩阵呢？其实它是Bi-LSTM+CRF模型的一个参数。在开始训练模型之前，可以随机初始化，所有随机初始化的分数会在训练过程中自动更新。</p>
+</li>
+<li><p>训练过程中的损失函数：</p>
+<p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B01.png" alt="损失函数1"></p>
+</li>
+</ul>
+<p>  上式是由输入序列X得到真实标记序列y的概率的式子，其中，s(X, y)表示由输入序列 X 预测出真实标注序列 y 的分数。式子的含义是真实标注序列在所有可能标注序列中的分数占比。</p>
+<ul>
+<li><p>可见，我们训练的目的是使真实标注序列在所有可能标注序列中有最高的分数；</p>
+</li>
+<li><p>也就是，在训练过程中，不断更新 Bi-LSTM+CRF 模型的参数，使得真实标注序列的比重保持不断增加；</p>
+<p>上式取对数得到损失函数：</p>
+<p><img src="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B02.png" alt="损失函数2"></p>
+</li>
+<li><p>因为通常是最小化损失，所以我们也可以对上式取负然后最小化它，这样我们就可以使用梯度下降等优化方法来求解参数，也就训练了转移分数矩阵和Bi-LSTM中的参数，从而能够得到最可能的实体类别标注序列，判断实体位置。</p>
+</li>
+</ul>
 ]]></content>
       <tags>
-        <tag>调研报告</tag>
+        <tag>NER</tag>
       </tags>
   </entry>
   <entry>
@@ -182,6 +304,32 @@
 ]]></content>
       <tags>
         <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>短文本相似度计算调研</title>
+    <url>/2020/11/27/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/</url>
+    <content><![CDATA[<p>本文是对短文本相似度计算任务的调研报告，简单介绍了目前解决该问题的一些方法。</p>
+<a id="more"></a>
+
+<h3 id="短文本相似度计算调研"><a href="#短文本相似度计算调研" class="headerlink" title="短文本相似度计算调研"></a>短文本相似度计算调研</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>短文本相似度计算，即求解两个短文本之间的相似程度。目前，短文本相似度算法可以分为三大类：无监督相似度计算、有监督相似度计算，以及有监督+无监督的相似度计算。</p>
+<h4 id="无监督相似度计算"><a href="#无监督相似度计算" class="headerlink" title="无监督相似度计算"></a>无监督相似度计算</h4><p>无监督相似度计算，又分为基于词汇重合度的TF-IDF（Term Frequency–Inverse Document Frequency）、BM25、Jaccard、VSM（Vector Space Model）、SimHash等模型，基于浅层语义的主题模型：LDA（Latent Dirichlet Allocation）、PLSA[1]（Probabilistic Latent Semantic Analysis）等，基于语义的编码模型：word to vector、WMD[2]（Word Mover’s Distance）、预训练编码器（如XLNet[3]、BERT[4]、ELMo[5]）等，以及基于以上各种方法的相似度分数的经验加权叠加。无监督方法的好处是不需要训练数据，可以直接通用于任何场景，缺点是准确度一般，常用于冷启动的场景。</p>
+<h4 id="有监督相似度计算"><a href="#有监督相似度计算" class="headerlink" title="有监督相似度计算"></a>有监督相似度计算</h4><p>有监督的方法可以分为基于传统的分类模型，如LR（Logistic regression）、SVM、GBDT[6]（Gradient Boosting Decision Tree）等，以及基于深度神经网络的模型。基于深度神经网络的模型普遍分为两种思路：基于表示的模型与基于交互的模型。基于表示的模型主要基于孪生神经网络[7]（Siamese）结构，“孪生”是通过共享参数而实现的，将两个文本映射到同一空间，再计算相似度，例如DSSM（Deep Structured Semantic Models）、CLSM[8]（Convolutional Latent Semantic Model）、ARC-I[9]（Architecture-I）等等；优点是结构简单，可以用于构建索引等场景，缺点是两个短文本的编码完全独立进行，无法考虑任何短文本内部之间的关联。基于交互的模型为了解决上述问题，将编码的过程加入了短文本内部之间的关联参数矩阵，更好地把握了语义焦点，能对上下文重要性进行更好的建模，例如ARC-II[9]（Architecture-II）、MatchPyramid[10]、MVLSTM[11]（Multi-variable Long Short-Term Memory）等。有监督方法可以在特定的场景下通过有标签数据来定制化相似度模型，从而提高准确率；但是有标签数据的获取成本太大，学习的时间复杂度也很高。</p>
+<h4 id="有监督-无监督的相似度计算"><a href="#有监督-无监督的相似度计算" class="headerlink" title="有监督+无监督的相似度计算"></a>有监督+无监督的相似度计算</h4><p>有监督和无监督的混合方法鉴于无监督学习和有监督学习的优缺点，将它们结合到一起，提高了无监督学习的准确率并且降低了有监督学习的时间成本。这种混合方法其实是一种迁移学习（迁移学习是一种机器学习的方法，指的是一个预训练的模型被重新用在另一个任务中，一般两种任务之间需要有一定的相似性和关联性），随着近年来研究的进行，其效果越来越突显出来，例如2018年google提出来的Bert模型[4]以及2019年google再次提出来的XLNet模型[3]，都在各项自然语言处理任务（包括短文本相似度）上取得了颠覆性的突破。其中，Bert借用了Transformer结构中的encoding部分来对文本进行编码，其基于Self-Attention机制，并引入了Positional Encoding，既能够有效地捕捉文本字符间的位置关系，又能并行计算以提高计算效率，只需要在大量的无监督数据集上进行模型的预训练，并在特定任务集合上做少量的fine-tune，便可以达到一个很不错的效果。当然，Bert的预训练过程也并不是完美无缺的，Bert的预训练语言模型目标函数的计算过程强行做了独立性假设，并且基于随机概率MASK的预训练文本和基于具体任务的整句文本fine-tune的过程，具有明显的不一致性。综上考虑，XLNet被提出，为了解决双向上下文的问题，XLNet引入了排列（permutation）语言模型。排列语言模型在预测时，需要预测目标的位置信息，因此将传统的Self-Attention修改为Two-Stream Self-Attention来捕捉位置信息；XLNet还借鉴了Transformer-XL的优点，它对于很长的上下文的处理是要优于传统的Transformer的。</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1].  Hofmann T. Probabilistic latent semantic analysis[J]. arXiv preprint arXiv:1301.6705, 2013.</p>
+<p>[2].  Kusner M, Sun Y, Kolkin N, et al. From word embeddings to document distances[C]. International conference on machine learning. 2015: 957-966.</p>
+<p>[3].  Yang Z, Dai Z, Yang Y, et al. Xlnet: Generalized autoregressive pretraining for language understanding[C]. Advances in neural information processing systems. 2019: 5753-5763.</p>
+<p>[4].  Devlin J, Chang M W, Lee K, et al. Bert: Pre-training of deep bidirectional transformers for language understanding[J]. arXiv preprint arXiv:1810.04805, 2018.</p>
+<p>[5].  Peters M E, Neumann M, Iyyer M, et al. Deep contextualized word representations[J]. arXiv preprint arXiv:1802.05365, 2018.</p>
+<p>[6].  Ke G, Meng Q, Finley T, et al. Lightgbm: A highly efficient gradient boosting decision tree[C]. Advances in neural information processing systems. 2017: 3146-3154.</p>
+<p>[7].  Chopra S, Hadsell R, LeCun Y. Learning a similarity metric discriminatively, with application to face verification[C]. 2005 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR’05). IEEE, 2005, 1: 539-546.</p>
+<p>[8].  Shen Y, He X, Gao J, et al. A latent semantic model with convolutional-pooling structure for information retrieval[C]. Proceedings of the 23rd ACM international conference on conference on information and knowledge management. 2014: 101-110.</p>
+<p>[9].  Hu B, Lu Z, Li H, et al. Convolutional neural network architectures for matching natural language sentences[C]. Advances in neural information processing systems. 2014: 2042-2050.</p>
+<p>[10].       Pang L, Lan Y, Guo J, et al. Text matching as image recognition[J]. arXiv preprint arXiv:1602.06359, 2016.</p>
+<p>[11].       Wan S, Lan Y, Guo J, et al. A deep architecture for semantic matching with multiple positional sentence representations[J]. arXiv preprint arXiv:1511.08277, 2015.</p>
+]]></content>
+      <tags>
+        <tag>调研报告</tag>
       </tags>
   </entry>
   <entry>
@@ -351,6 +499,141 @@
 <p><img src="/2020/11/22/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p4.png" alt="区别"></p>
 <p>根据最新的统计，图数据库仍然是增长最快的存储系统。相反，关系型数据库的增长基本保持在一个稳定的水平。下图列出了常用的图数据库系统以及他们最新使用情况的排名。 其中Neo4j系统目前仍是使用率最高的图数据库，它拥有活跃的社区，而且系统本身的查询效率高，但唯一的不足就是不支持准分布式；相反，OrientDB和JanusGraph（原Titan）支持分布式，但这些系统相对较新，社区不如Neo4j活跃，这也就意味着使用过程当中不可避免地会遇到一些刺手的问题。如果选择RDF的存储系统，Jena或许一个比较不错的选择。</p>
 <p><img src="/2020/11/22/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/p5.png" alt="数据库"></p>
+]]></content>
+      <tags>
+        <tag>调研报告</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>聊天机器人系统</title>
+    <url>/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<p>本文介绍了聊天机器人的研究背景、系统框架、实现方法（检索式聊天机器人和生成式聊天机器人）中有代表性的经典模型、两种实现方法的比较还有聊天机器人领域研究的挑战和展望</p>
+<a id="more"></a>
+
+<h2 id="基于多轮对话模型的聊天机器人系统"><a href="#基于多轮对话模型的聊天机器人系统" class="headerlink" title="基于多轮对话模型的聊天机器人系统"></a>基于多轮对话模型的聊天机器人系统</h2><h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ol>
+<li><p>聊天机器人研究背景</p>
+</li>
+<li><p>聊天机器人系统框架</p>
+</li>
+<li><p>聊天机器人的实现方法</p>
+<ul>
+<li>检索式聊天机器人</li>
+<li>生成式聊天机器人</li>
+<li>两种方法的比较</li>
+</ul>
+</li>
+<li><p>聊天机器人研究存在的挑战</p>
+</li>
+<li><p>聊天机器人在研究上的展望</p>
+</li>
+</ol>
+<hr>
+<h3 id="聊天机器人研究背景"><a href="#聊天机器人研究背景" class="headerlink" title="聊天机器人研究背景"></a>聊天机器人研究背景</h3><p>首先，我们先通过一个问题来引入聊天机器人——“机器会思考吗？”。这是1950年图灵在《Mind》上发表的《计算机器和智能（Computing Machinery and Intelligence）》一文中提出的问题。为了验证“机器”能否“思考”，他又提出了一个“模仿游戏”，后来被称为“图灵测试”，该测试的依据是衡量一台机器的智能，在多大程度上与人类的智能相像，或不可区分。</p>
+<p>测试的具体内容是让计算机程序虚拟真人与询问者进行即时对话，询问者只能根据对话的内容，去判断谈话的对象是机器还是真人；如果询问者不能做到这一点，该机器就通过图灵测试了。</p>
+<p><img src="/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/%E5%9B%BE%E7%81%B5%E6%B5%8B%E8%AF%95.png" alt="图灵测试"></p>
+<p>可以看出，聊天机器人是图灵测试的一种实现方式，而图灵测试又被认为是人工智能的终极目标，这极大地激发了人们对聊天机器人的研究兴趣。</p>
+<p>另一方面，近年来，各种聊天机器人应运而生。从应用场景的角度来看，可以分为在线客服、娱乐、教育、个人助理和智能问答五个种类。 </p>
+<ul>
+<li>在线客服聊天机器人系统的主要功能是同用户进行基本沟通并自动回复用户有关产品或服务的问题，以实现降低企业客服运营成本、提升用户体验的目的。其应用场景通常为网站首页和手机终端。代表性的商用系统有小I机器人、京东的JIMI客服机器人等。</li>
+<li>娱乐场景下聊天机器人系统的主要功能是同用户进行开放主题的对话，从而实现对用户的精神陪伴、情感慰藉和心理疏导等作用。其应用场景通常为社交媒体、儿童玩具等。代表性的系统如微软“小冰”、微信“小微”、“小黄鸡”等。</li>
+<li>教育场景下的聊天机器人主要功能包括帮助用户学习某种语言；在学习某项专业技能中，指导用户学习、掌握某项专业技能；辅助用户在特定年龄阶段学习某种知识等。其应用场景通常为具备人机交互功能的学习、培训类软件以及智能玩具等。比如科大讯飞公司的开心熊宝智能玩具，它可以通过语音对话的形式辅助儿童学习唐诗、宋词以及回答简单的常识性问题。 </li>
+<li>个人助理类应用主要通过语音或文字与聊天机器人系统进行交互，实现个人事务的查询及代办功能，如天气查询、短信收发、智能搜索等。其应用场景通常为便携式移动终端设备。代表性的商业系统有苹果Siri、百度度秘、微软小娜等。</li>
+<li>智能问答类的聊天机器人主要功能是理解并回答用户提出的问题，这些问题比较侧重于事实性问题或者是需要计算和逻辑推理型的问题。代表性的系统有IBM Watson、Wolfram Alpha等。</li>
+</ul>
+<p>可以看到，聊天机器人也具有很好的民用价值，符合科研及产品化的发展方向。</p>
+<hr>
+<h3 id="聊天机器人系统框架"><a href="#聊天机器人系统框架" class="headerlink" title="聊天机器人系统框架"></a>聊天机器人系统框架</h3><p><img src="/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/%E6%A1%86%E6%9E%B6.png" alt="系统框架"></p>
+<p>如图显示了一个通用的聊天机器人的系统框架，其中包含五个主要的功能模块（输入预处理模块、自然语言理解模块、对话管理模块、答案生成模块和输出处理模块）。基本的流程是：</p>
+<ul>
+<li>用户通过文字形式或者语音形式输入之后进行预处理，转化成文本形式进行自然语言理解；从完整的语句中提取出所需要的关键信息，并理解用户输入语句的含义，产生特定的语义表达式；然后进入对话管理模块，识别出用户输入语句是属于封闭式（要执行某种任务）还是开放式地进行闲聊，进而选择相应的对话模型；接着根据当前对话的模型进行答案的提取；最后将得到的答案转换为文本形式或者进行语音合成输出给用户。</li>
+</ul>
+<hr>
+<h3 id="聊天机器人的实现方法"><a href="#聊天机器人的实现方法" class="headerlink" title="聊天机器人的实现方法"></a>聊天机器人的实现方法</h3><p> 实现对话系统的技术方法主要被划分为检索式模型与生成式模型。</p>
+<ul>
+<li><p>检索式对话模型的主要思想是根据用户输入的句子，在对话语料库中搜索匹配语义最相近的句子，将它们进行排序，从而得到最合适的应答内容，输出给用户。其工作流程图如下图所示：</p>
+<p><img src="/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="检索式对话系统流程图"></p>
+<ul>
+<li><p>检索式对话模型比较经典的代表技术是基于交互的多轮对话文本匹配模型SMN（Sequential Matching Network），其结构图如下：</p>
+<p><img src="/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/SMN%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt="SMN结构图"></p>
+<ul>
+<li>第一层是对话-回复匹配层。在这一层中首先对历史对话中的每条语句和候选回复进行词嵌入的处理得到相应的词向量表示。然后通过它们的词向量计算出词语级的相似度矩阵M1。</li>
+<li>然后，将词嵌入的结果通过第一个GRU网络进行编码，得到历史对话和候选回复对应的隐藏状态序列。然后通过它们计算语句级的相似度矩阵M2。</li>
+<li>将得到的词相似度矩阵M1和句相似度矩阵M2组成一个匹配信息张量，由于此张量是二维的，所以用CNN对其进行建模，通过卷积和池化操作对词语级和语句级的关系特征进行提取，得到关键信息的特征向量。</li>
+<li>第二层是匹配积累层。将上一层中提取的特征向量输入到第二个GRU中，按照时间顺序对历史对话进行建模，得到隐藏状态序列。</li>
+<li>第三层是匹配预测层。这一层通过第二层得到的隐藏状态序列计算侯选回复与历史对话的匹配程度，从而选择最合适的语句进行输出。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>生成式对话模型的核心思想是根据用户输入的句子，利用模型逐词或逐字生成答案，然后将答案回复给用户。</p>
+<ul>
+<li><p>其中，多数技术都采用了Encoder-Decoder模型，即编码-解码模型，其框架技术原理如下图所示：</p>
+<p><img src="/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/%E7%BC%96%E7%A0%81%E8%A7%A3%E7%A0%81%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6%E5%9B%BE.png" alt="编码解码模型框架图"></p>
+<ul>
+<li>Encoder就是对输入序列进行编码，通过一系列非线性变换转化成一个带有语义的固定长度的向量；</li>
+<li>Decoder就是根据之前生成的固定向量再转化成输出序列。</li>
+<li>实现对话系统的时候，Encoder和Decoder都不是固定的，可选择的模型有RNN、LSTM、GRU等，可以自由组合。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>两种方法的比较</p>
+<table>
+<thead>
+<tr>
+<th align="center">构建方法</th>
+<th align="center">检索式</th>
+<th align="center">生成式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">聊天语料库</td>
+<td align="center">问答句对</td>
+<td align="center">问答句对</td>
+</tr>
+<tr>
+<td align="center">人工工作量</td>
+<td align="center">较大</td>
+<td align="center">较低</td>
+</tr>
+<tr>
+<td align="center">语法准确性</td>
+<td align="center">准确</td>
+<td align="center">不能保证</td>
+</tr>
+<tr>
+<td align="center">应答可控性</td>
+<td align="center">较高</td>
+<td align="center">较低</td>
+</tr>
+<tr>
+<td align="center">可扩展性</td>
+<td align="center">一般</td>
+<td align="center">较好</td>
+</tr>
+<tr>
+<td align="center">技术难度</td>
+<td align="center">中等</td>
+<td align="center">较难</td>
+</tr>
+</tbody></table>
+<p>（技术难度：生成式模型很难训练，回复时经常存在一些语法错误。）</p>
+</li>
+</ul>
+<hr>
+<h3 id="聊天机器人研究存在的挑战"><a href="#聊天机器人研究存在的挑战" class="headerlink" title="聊天机器人研究存在的挑战"></a>聊天机器人研究存在的挑战</h3><p>当前，对于聊天机器人的研究存在的挑战主要包括：</p>
+<ul>
+<li>对话上下文建模：聊天是一个有特定背景的连续交互过程，在这一过程中经常出现上下文省略和指代的情况。一句话的意义有时要结合对话上下文或者相关的背景才能确定，因此对于长对话文本上下文的建模是很重要的，也是一个难点。</li>
+<li>对话过程中的知识表示：聊天机器人相关的领域任务可能有复杂的组成，牵涉很多的因素，只有了解这些因素的关系和含义，才能与用户做到真正意义上的交流。</li>
+<li>聊天机器人智能程度的评价：目前，虽然可以采用一些通用的客观评价标准对聊天机器人进行评价，如回答正确率、任务完成率、对话回合数、对话时间等；但却无法衡量用户满意度、回复的连续性、一致性以及自然度。</li>
+</ul>
+<hr>
+<h3 id="聊天机器人在研究上的展望"><a href="#聊天机器人在研究上的展望" class="headerlink" title="聊天机器人在研究上的展望"></a>聊天机器人在研究上的展望</h3><p>如果说传统的聊天机器人关注的是“智商”，即聊天机器人的信息和知识获取能力的话，那么今后的聊天机器人研究则更加注重“情商”，即聊天机器人的个性化情感抚慰、心理疏导和精神陪护等能力。 </p>
+<ul>
+<li><p>比如前几年创办的医疗类 AI 聊天机器人Woebot，主要用于缓解使用者的抑郁、焦虑症状。吴恩达也以董事长的身份加入了这家公司，他说“如果我们的机器能有一些真正地治疗师的洞察力和同情心，即使只是在网上聊天，也可以帮助到数百万人。”</p>
+<p>可见这种“化疗”机器人，应该是未来聊天机器人发展的重要方向之一。</p>
+</li>
+</ul>
 ]]></content>
       <tags>
         <tag>调研报告</tag>

@@ -20,22 +20,23 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本文介绍了现有的一些关于命名实体识别技术的研究方法，命名实体识别技术是信息抽取技术的一部分，是很多任务的基础工作。">
+  <meta name="description" content="随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="命名实体识别（NER）调研">
-<meta property="og:url" content="http://example.com/2020/11/27/NER/index.html">
+<meta property="og:title" content="Bert模型是否适用于文本相似度计算任务">
+<meta property="og:url" content="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/index.html">
 <meta property="og:site_name" content="Florence&#39;s Blog">
-<meta property="og:description" content="本文介绍了现有的一些关于命名实体识别技术的研究方法，命名实体识别技术是信息抽取技术的一部分，是很多任务的基础工作。">
+<meta property="og:description" content="随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/11/27/NER/p1.png">
-<meta property="article:published_time" content="2020-11-27T06:46:08.000Z">
-<meta property="article:modified_time" content="2020-11-27T07:25:05.454Z">
+<meta property="og:image" content="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png">
+<meta property="og:image" content="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C2.png">
+<meta property="article:published_time" content="2020-12-06T03:25:29.000Z">
+<meta property="article:modified_time" content="2020-12-06T06:05:48.845Z">
 <meta property="article:author" content="Florence">
-<meta property="article:tag" content="调研报告">
+<meta property="article:tag" content="文本相似度计算">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/11/27/NER/p1.png">
+<meta name="twitter:image" content="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png">
 
-<link rel="canonical" href="http://example.com/2020/11/27/NER/">
+<link rel="canonical" href="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/">
 
 
 <script id="page-configurations">
@@ -48,7 +49,7 @@
   };
 </script>
 
-  <title>命名实体识别（NER）调研 | Florence's Blog</title>
+  <title>Bert模型是否适用于文本相似度计算任务 | Florence's Blog</title>
   
 
 
@@ -186,7 +187,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/27/NER/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.JPG">
@@ -199,7 +200,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          命名实体识别（NER）调研
+          Bert模型是否适用于文本相似度计算任务
         </h1>
 
         <div class="post-meta">
@@ -210,7 +211,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-11-27 14:46:08 / 修改时间：15:25:05" itemprop="dateCreated datePublished" datetime="2020-11-27T14:46:08+08:00">2020-11-27</time>
+              <time title="创建时间：2020-12-06 11:25:29 / 修改时间：14:05:48" itemprop="dateCreated datePublished" datetime="2020-12-06T11:25:29+08:00">2020-12-06</time>
             </span>
 
           <br>
@@ -219,14 +220,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -238,21 +239,40 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>本文介绍了现有的一些关于命名实体识别技术的研究方法，命名实体识别技术是信息抽取技术的一部分，是很多任务的基础工作。</p>
+        <p>随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。</p>
 <a id="more"></a>
 
-<h3 id="命名实体识别技术调研"><a href="#命名实体识别技术调研" class="headerlink" title="命名实体识别技术调研"></a>命名实体识别技术调研</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>命名实体就是命名实体识别的研究主体，一般包括三大类（实体类、时间类和数字类）和七小类（人名、地名、机构名、时间、日期、货币和百分比）命名实体。</p>
-<p>命名实体识别（Named Entity Recognition，NER）又称专名识别，从早期基于字典和规则的方法，到传统机器学习的方法，再到近年来基于深度学习的各类方法，其研究进展的大概趋势如下图所示。</p>
-<img src="/2020/11/27/NER/p1.png" alt="NER发展趋势" style="zoom:80%;">
-
-<h4 id="基于字典和规则的方法"><a href="#基于字典和规则的方法" class="headerlink" title="基于字典和规则的方法"></a>基于字典和规则的方法</h4><p>基于字典和规则的方法是命名实体识别任务中最古老的方法。利用手工编写的规则，提取特征，比如关键词、指示词、位置词等，收集特征词，并且给每一个规则都赋予一个权值，当规则冲突的时候，选择权值最高的规则进行命名实体类型的判别；但是这些规则往往依赖于具体语言、领域和文本风格，编制过程耗时且难以涵盖所有的语言现象，特别容易产生错误，系统可移植性不好，对于不同的系统需要语言学专家重新书写规则。</p>
-<h4 id="基于传统机器学习的方法"><a href="#基于传统机器学习的方法" class="headerlink" title="基于传统机器学习的方法"></a>基于传统机器学习的方法</h4><p>基于传统机器学习的方法主要包括隐马尔可夫模型（Hidden Markov Model，HMM）、支持向量机（support vector machines，SVM）、条件随机场[1]（Conditional Random Fields，CRF）等。在此类方法中，NER被当作序列标注问题，利用大规模语料来学习出标注模型，从而对句子的各个位置进行标注。隐马尔可夫模型（HMM）认为观测到的句子中的每个词都是相互独立的，而且当前时刻的标注只与前一时刻的标注相关，但实际上，句子中的每个词是存在依赖关系的，且当前时刻的标注应该与前一时刻以及后一时刻的标注都相关联，因此，HMM模型虽然在训练以及识别时的效率更高，但是准确率比较低，效果不够理想；条件随机场（CRF）为命名实体识别提供了一个特征灵活、全局最优的标注框架，能对隐含状态建模，学习状态序列的特点，在标注准确率上有一定优势，但是收敛速度较慢、所需的训练时间也更长。基于统计机器学习的方法中，CRF是使用最广泛的，它的目标函数不仅考虑输入的状态特征函数，而且还包含了标签转移特征函数。在训练时可以使用随机梯度下降法（Stochastic Gradient Descent，SGD）学习模型参数。在已知模型时，给输入序列求预测输出序列即求使目标函数最大化的最优序列，是一个动态规划问题，可以使用Viterbi算法解码来得到最优标签序列。</p>
-<h4 id="基于深度学习的方法"><a href="#基于深度学习的方法" class="headerlink" title="基于深度学习的方法"></a>基于深度学习的方法</h4><p>随着硬件计算能力的发展以及词的分布式表示（word embedding）的提出，神经网络可以有效处理这种序列标注任务：将分词从离散的独热向量（one-hot）表示映射到低维空间中成为稠密的词向量（embedding），随后将句子的embedding序列输入到卷积神经网络（Convolutional Neural Networks，CNN）或循环神经网络（Recurrent Neural Network，RNN）中，用神经网络自动提取特征，归一化指数（Softmax）函数来预测每个分词的标签。这种方法使得模型的训练成为一个端到端的过程，不依赖于特征工程，是一种数据驱动的方法，但网络种类繁多、对参数设置依赖大，模型可解释性差。此外，这种方法的一个缺点是对每个分词打标签的过程是独立的进行，不能直接利用上文已经预测的标签，进而导致预测出的标签序列可能是无效的。因此，学界提出了深度学习模型（DL）+CRF的混合模型做序列标注，在神经网络的输出层接入CRF层来做句子级别的标签预测，使得标注过程不再是对各个分词的独立分类。</p>
-<h4 id="近期工作"><a href="#近期工作" class="headerlink" title="近期工作"></a>近期工作</h4><p>近年来，在基于神经网络结构的NER研究主要集中在三个方面：一是，使用流行的注意力机制[2]（Attention Mechanism）来提高模型效果；二是，针对少量标注训练数据或无标注数据进行的一些研究，其中包括了迁移学习[3]和半监督学习[4]，这也是未来研究的重点。</p>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1].  Lafferty J, McCallum A, Pereira F C N. Conditional random fields: Probabilistic models for segmenting and labeling sequence data[J]. 2001.</p>
-<p>[2].  Zukov-Gregoric A, Bachrach Y, Minkovsky P, et al. Neural named entity recognition using a self-attention mechanism[C]. 2017 IEEE 29th International Conference on Tools with Artificial Intelligence (ICTAI). IEEE, 2017: 652-656.</p>
-<p>[3].  Beryozkin G, Drori Y, Gilon O, et al. A Joint Named-Entity Recognizer for Heterogeneous Tag-sets Using a Tag Hierarchy[J]. arXiv preprint arXiv:1905.09135, 2019.</p>
-<p>[4].  Peters M E, Ammar W, Bhagavatula C, et al. Semi-supervised sequence tagging with bidirectional language models[J]. arXiv preprint arXiv:1705.00108, 2017.</p>
+<h3 id="Bert模型是否适用于文本相似度计算任务"><a href="#Bert模型是否适用于文本相似度计算任务" class="headerlink" title="Bert模型是否适用于文本相似度计算任务"></a>Bert模型是否适用于文本相似度计算任务</h3><p>先说结论：我的这个文本相似度计算任务是通过网络爬虫获取的数据，是没有相似度标签的（比如0/1表示不相似/相似），是无监督训练。对于这种情况，不能够通过fine-tune（指的是用别人训练好的模型，即预训练模型，加上我们自己的数据，来训练新的模型）进行微调，用Bert提取句向量再通过余弦函数计算相似度的效果并不好甚至不如用词嵌入模型Glove的效果好。</p>
+<p>本文主要参考了2019年8月底发表在EMNLP会议上的一篇论文：</p>
+<blockquote>
+<p>Reimers N, Gurevych I. Sentence-bert: Sentence embeddings using siamese bert-networks[J]. arXiv preprint arXiv:1908.10084, 2019.</p>
+</blockquote>
+<p>论文中指出随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型均不适合语义相似度搜索，也不适合非监督任务。</p>
+<p>解决聚类和语义相似度计算的一种常见方法是将每个句子映射到一个向量空间，使得语义相似的句子很接近。有人会尝试将整个句子输入预训练模型中，得到该句的句向量，然后作为句子的句向量表示，但是在这篇论文中指出这样得到的句向量表达语义信息的能力并不好，也就是说，两个相似的句子，得到的句向量可能会有很大的差别。</p>
+<p>文中还列出了对比实验结果，这里我们主要关注<strong>无监督</strong>训练结果：</p>
+<h6 id="无监督训练"><a href="#无监督训练" class="headerlink" title="无监督训练"></a>无监督训练</h6><ul>
+<li><p>文中的评测采用的是STS 2012-2016五年的任务数据、STS benchmark数据(2017年构建)、SICK-Relatedness数据，这些数据集都是标好label的句子对，label表示句子之间的相互关系，范围为0~5（0是没什么关系，5表示句子非常相近）。</p>
+</li>
+<li><p>无监督评测不采用这些数据集的任何训练数据，直接用训练好的模型得到句向量+余弦函数来计算句子间的相似度，然后通过斯皮尔曼等级相关系数来衡量模型的优劣。实验结果如下：</p>
+<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png" alt="论文结果"></p>
+<p>结果显示直接采用BERT的输出结果，效果并不好，甚至不如GloVe嵌入向量的效果好；后两栏表示采用本文的孪生网络在NLI数据集上fine-tune后的模型效果，会明显要好很多，但是SBERT和SRoBERTa差异不大。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>CLS和avg是本文尝试用Bert模型得到句向量的不同方法：CLS是以第一个特征位置向量作为句向量；avg是取输出层的所有字向量的平均值作为句向量。</li>
+<li>InferSent是一种句子embeddings方法，它为英语句子提供语理解。</li>
+<li>Universal Sentence Encoder：通用句子编码器。</li>
+<li>base/large：是Bert模型的两种类型，一个是12层Transformer，一个是24层Transformer。</li>
+</ul>
+</li>
+</ul>
+<h6 id="有监督训练"><a href="#有监督训练" class="headerlink" title="有监督训练"></a>有监督训练</h6><ul>
+<li><p>但另一方面，如果是有监督训练，经过fine-tune，预训练模型的效果都有很大的提升，其中Bert达到了最好的效果：</p>
+<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C2.png" alt="论文结果2"></p>
+<ul>
+<li>有监督STS数据集采用的是STS benchmark（简称STSb）数据集，就是上面提到的2017年抽取构建的，是当前比较流行的有监督STS数据集。它主要来自三个方面：字幕、新闻、论坛，包含8,628个句子对，训练集5,749，验证集1,500，测试集1,379。BERT将句子对同时输入网络，最后再接一个简单的回归模型作为输出，目前在此数据集上取得了最好的效果。</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -263,7 +283,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/" rel="tag"><i class="fa fa-tag"></i> 调研报告</a>
+              <a href="/tags/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97/" rel="tag"><i class="fa fa-tag"></i> 文本相似度计算</a>
           </div>
 
         
@@ -272,12 +292,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/22/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E8%B0%83%E7%A0%94/" rel="prev" title="知识图谱调研">
-      <i class="fa fa-chevron-left"></i> 知识图谱调研
+    <a href="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/" rel="prev" title="命名实体识别任务中HMM、CRF、Bi-LSTM+CRF模型详解">
+      <i class="fa fa-chevron-left"></i> 命名实体识别任务中HMM、CRF、Bi-LSTM+CRF模型详解
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/11/27/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6/" rel="next" title="短文本相似度计算调研">
-      短文本相似度计算调研 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/" rel="next" title="聊天机器人系统">
+      聊天机器人系统 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -337,7 +357,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94"><span class="nav-number">1.</span> <span class="nav-text">命名实体识别技术调研</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%AD%97%E5%85%B8%E5%92%8C%E8%A7%84%E5%88%99%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">基于字典和规则的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">基于传统机器学习的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">基于深度学习的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%91%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.5.</span> <span class="nav-text">近期工作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">Bert模型是否适用于文本相似度计算任务</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E8%AE%AD%E7%BB%83"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">无监督训练</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%9C%89%E7%9B%91%E7%9D%A3%E8%AE%AD%E7%BB%83"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">有监督训练</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
