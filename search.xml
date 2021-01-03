@@ -505,6 +505,182 @@
       </tags>
   </entry>
   <entry>
+    <title>知识库、数据集调研报告</title>
+    <url>/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<p>关于Freebase、google knowledge graph、Wikidata知识库和《Concretely Annotated Corpora》论文数据集的调研报告。</p>
+<a id="more"></a>
+
+<h2 id="知识库调研"><a href="#知识库调研" class="headerlink" title="知识库调研"></a>知识库调研</h2><h3 id="Freebase"><a href="#Freebase" class="headerlink" title="Freebase"></a>Freebase</h3><p>2010年7月16日被谷歌收购。2014年12月16日，Google宣布将在六个月后关闭Freebase，并帮助将数据从Freebase迁移至<a href="https://zh.wikipedia.org/wiki/%E7%BB%B4%E5%9F%BA%E6%95%B0%E6%8D%AE">维基数据</a>。2015年12月16日，Google正式发布<a href="https://developers.google.com/knowledge-graph/">知识图谱API</a>页面，用以替代Freebase API。Freebase.com于2016年5月2日正式关闭。</p>
+<h3 id="google-knowledge-graph"><a href="#google-knowledge-graph" class="headerlink" title="google knowledge graph"></a>google knowledge graph</h3><ol>
+<li><p>网址：<a href="https://developers.google.com/knowledge-graph/">https://developers.google.com/knowledge-graph/</a></p>
+</li>
+<li><p>有API接口，也可以在线访问数据</p>
+</li>
+<li><p>返回数据格式是json</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;@context&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;@vocab&quot;</span>: <span class="string">&quot;http://schema.org/&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;goog&quot;</span>: <span class="string">&quot;http://schema.googleapis.com/&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;resultScore&quot;</span>: <span class="string">&quot;goog:resultScore&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;detailedDescription&quot;</span>: <span class="string">&quot;goog:detailedDescription&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;EntitySearchResult&quot;</span>: <span class="string">&quot;goog:EntitySearchResult&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kg&quot;</span>: <span class="string">&quot;http://g.co/kg&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;ItemList&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;itemListElement&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;EntitySearchResult&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;result&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;@id&quot;</span>: <span class="string">&quot;kg:/m/0dl567&quot;</span>,		<span class="comment">//标识，对应的entity在 Freebase 中的mid。</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Taylor Swift&quot;</span>,		<span class="comment">//姓名</span></span><br><span class="line">        <span class="attr">&quot;@type&quot;</span>: [</span><br><span class="line">          <span class="string">&quot;Thing&quot;</span>,</span><br><span class="line">          <span class="string">&quot;Person&quot;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;Singer-songwriter&quot;</span>,		<span class="comment">//简要描述</span></span><br><span class="line">        <span class="attr">&quot;image&quot;</span>: &#123;								<span class="comment">//可供识别的图片</span></span><br><span class="line">          <span class="attr">&quot;contentUrl&quot;</span>: <span class="string">&quot;https://t1.gstatic.com/images?q=tbn:ANd9GcQmVDAhjhWnN2OWys2ZMO3PGAhupp5tN2LwF_BJmiHgi19hf8Ku&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;https://en.wikipedia.org/wiki/Taylor_Swift&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;license&quot;</span>: <span class="string">&quot;http://creativecommons.org/licenses/by-sa/2.0&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;detailedDescription&quot;</span>: &#123;				<span class="comment">//详细描述</span></span><br><span class="line">          <span class="attr">&quot;articleBody&quot;</span>: <span class="string">&quot;Taylor Alison Swift is an American singer-songwriter and actress. Raised in Wyomissing, Pennsylvania, she moved to Nashville, Tennessee, at the age of 14 to pursue a career in country music. &quot;</span>,</span><br><span class="line">          <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://en.wikipedia.org/wiki/Taylor_Swift&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;license&quot;</span>: <span class="string">&quot;https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://taylorswift.com/&quot;</span>		<span class="comment">//个人主页</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;resultScore&quot;</span>: <span class="number">4850</span>		<span class="comment">//与搜索内容的匹配程度</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>注意</strong>：实体中的大部分信息是直接显示在Google相关搜索的右侧栏wiki中的，不够丰富。</p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/Taylor_Swift.png" alt="Taylor_Swift"></p>
+</li>
+<li><p><strong>局限</strong>：知识图搜索API仅返回单个匹配实体，而不是互连实体的图，不能反映实体之间的关系。</p>
+</li>
+<li><p>在线搜索举例：</p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass.png" alt="karen Bass"></p>
+<ul>
+<li><p>各参数说明：</p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/google_KG_statement.jpg" alt="google_KG_statement"></p>
+</li>
+<li><p>返回结果是json格式：</p>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;@context&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;resultScore&quot;</span>: <span class="string">&quot;goog:resultScore&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;EntitySearchResult&quot;</span>: <span class="string">&quot;goog:EntitySearchResult&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kg&quot;</span>: <span class="string">&quot;http://g.co/kg&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;detailedDescription&quot;</span>: <span class="string">&quot;goog:detailedDescription&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;goog&quot;</span>: <span class="string">&quot;http://schema.googleapis.com/&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;@vocab&quot;</span>: <span class="string">&quot;http://schema.org/&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;ItemList&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;itemListElement&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;resultScore&quot;</span>: <span class="number">16844.9296875</span>,</span><br><span class="line">      <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;EntitySearchResult&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;result&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;detailedDescription&quot;</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;https://en.wikipedia.org/wiki/Karen_Bass&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;articleBody&quot;</span>: <span class="string">&quot;Karen Ruth Bass is an American politician serving as the U.S. Representative for California&#x27;s 37th congressional district since 2011. &quot;</span>,</span><br><span class="line">            <span class="attr">&quot;license&quot;</span>: <span class="string">&quot;https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;inLanguage&quot;</span>: <span class="string">&quot;en&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">&quot;@id&quot;</span>: <span class="string">&quot;kg:/m/027g9m6&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;description&quot;</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;@value&quot;</span>: <span class="string">&quot;U.S. Representative&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;@language&quot;</span>: <span class="string">&quot;en&quot;</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;@language&quot;</span>: <span class="string">&quot;zh&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;@value&quot;</span>: <span class="string">&quot;美国众议院议员&quot;</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;@language&quot;</span>: <span class="string">&quot;zh-TW&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;@value&quot;</span>: <span class="string">&quot;美國眾議院議員&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">&quot;@type&quot;</span>: [</span><br><span class="line">          <span class="string">&quot;Thing&quot;</span>,</span><br><span class="line">          <span class="string">&quot;Person&quot;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://www.karenbass.com/&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;@language&quot;</span>: <span class="string">&quot;en&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;@value&quot;</span>: <span class="string">&quot;Karen Bass&quot;</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;@value&quot;</span>: <span class="string">&quot;凯伦·巴斯&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;@language&quot;</span>: <span class="string">&quot;zh&quot;</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;@value&quot;</span>: <span class="string">&quot;凱倫·巴斯&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;@language&quot;</span>: <span class="string">&quot;zh-TW&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h3 id="Wikidata"><a href="#Wikidata" class="headerlink" title="Wikidata"></a>Wikidata</h3><ol>
+<li><p>首页网址：<a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">https://www.wikidata.org/wiki/Wikidata:Main_Page</a></p>
+</li>
+<li><p>访问Wikidata的数据：<a href="https://www.wikidata.org/wiki/">https://www.wikidata.org/wiki/</a> + 人物标识码</p>
+<p>如：<a href="https://www.wikidata.org/wiki/Q461739">https://www.wikidata.org/wiki/Q461739</a></p>
+<ul>
+<li>这一种方法和google knowledge graph的request差不多，都是用URL来访问</li>
+<li>用这种方法来访问并不是连接到维基百科的某个词条，而是一个单独的网页。这个不需要自己的apikey。感觉比较方便。并且这时返回的是一个结构化的网页，阅读性较好。如下图，会有很多属性-值这种关系</li>
+</ul>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass2.png" alt="karenBass"></p>
+<ul>
+<li>不过也可能不全，比如下图的核心小组成员，其实只列出了一条。</li>
+</ul>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass3.png" alt="karenBass"></p>
+</li>
+<li><p>数据转储方式</p>
+<p>这里提供两种方式：</p>
+<ul>
+<li><p>wikidata提供了API接口，用于通过实体的标识码获取实体的详细信息，主要包括与相关的其他实体的关系信息。 此API可以将结果以多种格式返回，例如以HTTP GET的方式获取标识码为Q461739的实体的详细信息并指定以json格式返回的url为：</p>
+<p><a href="https://www.wikidata.org/wiki/Special:EntityData/Q461739.json">https://www.wikidata.org/wiki/Special:EntityData/Q461739.json</a></p>
+<p>json格式的返回数据为：</p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass4.png" alt="karenBass"></p>
+<p>用在线json格式化工具可将其格式化：</p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass5.png" alt="karenBass"></p>
+<p>其中，json格式的entity顶级字段有：</p>
+<ul>
+<li>id: 实体标识码。</li>
+<li>type: 实体类型。</li>
+<li>labels: 不同语言描述的实体标签（姓名）。</li>
+<li>descriptions: 不同语言的实体描述（类似谷歌知识图谱中的简要描述，如American politician）。</li>
+<li>aliases: 不同语言描述的实体别名。</li>
+<li>claims: 以属性分组的实体声明(claims)或者陈述(statements)。</li>
+<li>sitelinks: 各种网站上关于此实体的描述。</li>
+<li>lastrevid: 当前json文件的版本。</li>
+<li>modified: 当前json文件的发布日期。</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li><p>我们最关心的应该是“claims”，这包含了实体的具体属性关系，一个实体可以有多个属性关系。</p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims.png" alt="claims"></p>
+</li>
+<li><p>claim 包含一条主体信息(main Snak)以及一些修饰信息(qualifier Snaks)。</p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims3.png" alt="claims"></p>
+</li>
+<li><p>statement是含有参考资料（reference）的claim。</p>
+</li>
+<li><p>每个claim总是与一个属性(property)关联(claim是关于此property的)。并且在一个实体中可以有多条claim与同一property关联。</p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims2.png" alt="claims"></p>
+</li>
+<li><p>claim含有以下字段:</p>
+<ul>
+<li>id: 识别码，只能保证当前数据库中唯一，不包含其他信息。</li>
+<li>type: claim的类型，目前只有statement和claim两种。</li>
+<li>mainsnak: 如果claim含有type值，那么它具有mainsnak字段包含与property相关的主体信息。</li>
+<li>rank: 表示claim是否应该显示在查询结果中，为preferred, normal 或者 deprecated.</li>
+<li>qualifiers: 修饰信息，一般为主体信息的上下文信息，每一条都与一个属性(property)关联。</li>
+<li>references: 如果claim是statement，那么会有一个参考资料的列表。</li>
+</ul>
+</li>
+</ul>
+<p><strong>解析claims：</strong></p>
+<ul>
+<li><p>json字段，除了claims顶级字段，其它信息都可以直接提取利用。</p>
+</li>
+<li><p>claims字段下为一个字典，字典的键为属性(property)，示例中只有一个key：P21。通过属性页查询url：<a href="https://www.wikidata.org/wiki/Property:P21%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%9F%A5%E9%81%93%E6%AD%A4%E5%B1%9E%E6%80%A7%E8%A1%A8%E7%A4%BA%E6%80%A7%E5%88%AB%E3%80%82">https://www.wikidata.org/wiki/Property:P21，可以知道此属性表示性别。</a></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims4.png" alt="claims"></p>
+</li>
+<li><p>与此属性关联的claim只有一个，mainsnak为此claim的主体信息，datavalue中的value为”Q6581072”，通过<a href="https://www.wikidata.org/wiki/Q6581072%E5%8F%AF%E6%9F%A5%E8%AF%A2%E5%88%B0%E8%AF%A5claim%E8%A1%A8%E7%A4%BA%E5%AE%9E%E4%BD%93%E7%9A%84%E6%80%A7%E5%88%AB%E4%B8%BA%E5%A5%B3%E3%80%82datavalue%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%B8%BA%E5%85%B6%E5%AE%83%E5%85%B3%E8%81%94%E5%AE%9E%E4%BD%93%E6%8F%90%E4%BE%9B%E5%AE%9E%E4%BD%93id%E3%80%82">https://www.wikidata.org/wiki/Q6581072可查询到该claim表示实体的性别为女。datavalue也可以为其它关联实体提供实体id。</a></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims5.png" alt="claims"></p>
+</li>
+<li><p>另外此claim的type为statment，因此含有一个参考资料列表-references。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<pre><code> **解析难点：**
+
+ * 属性都是以属性ID表示的，不能直接解析属性的含义
+ * 关联实体是以实体ID表示的，需要多次的查询-解析
+ * 不同种类实体含有的属性不同
+
+ **其他格式：**
+
+ 用https://www.wikidata.org/wiki/Special:EntityData/Q461739.rdf可以直接下载该实体的rdf压缩包，压缩包里面包含各个国家地区文字的rdf。</code></pre>
+<ul>
+<li><p>Wikidata提供了完整的数据库下载，因此可以下载完整的数据库（<a href="https://dumps.wikimedia.org/wikidatawiki/entities/%EF%BC%89%EF%BC%8C%E7%84%B6%E5%90%8E%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%AE%9E%E4%BD%93%E6%90%9C%E7%B4%A2%E6%9C%8D%E5%8A%A1%E3%80%82">https://dumps.wikimedia.org/wikidatawiki/entities/），然后搭建自己的实体搜索服务。</a></p>
+<ul>
+<li>数据下载</li>
+<li>数据导入</li>
+<li>搭建搜索服务</li>
+</ul>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/database.png" alt="database"></p>
+</li>
+</ul>
+<h2 id="论文调研"><a href="#论文调研" class="headerlink" title="论文调研"></a>论文调研</h2><p>《Concretely Annotated Corpora》开发了CONCRETE来记录和共享注释文档。</p>
+<p>主页见<a href="https://hltcoe.github.io/%E3%80%82">https://hltcoe.github.io/。</a></p>
+<p>他给出了一个serif_dog-bites-man.concrete，可以用concrete中相关的工具查看文档内容：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">concrete-inspect.py --text serif_dog-bites-man.concrete</span><br></pre></td></tr></table></figure>
+
+<p>该命令将通信文本输出到控制台。在这个案例中，该文本是采用SGML格式的简短文章：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;DOC id&#x3D;&quot;dog-bites-man&quot; type&#x3D;&quot;other&quot;&gt;</span><br><span class="line">&lt;HEADLINE&gt;</span><br><span class="line">Dog Bites Man</span><br><span class="line">&lt;&#x2F;HEADLINE&gt;</span><br><span class="line">&lt;TEXT&gt;</span><br><span class="line">&lt;P&gt;</span><br><span class="line">John Smith, manager of ACMÉ INC, was bit by a dog on March 10th, 2013.</span><br><span class="line">&lt;&#x2F;P&gt;</span><br><span class="line">&lt;P&gt;</span><br><span class="line">He died!</span><br><span class="line">&lt;&#x2F;P&gt;</span><br><span class="line">&lt;P&gt;</span><br><span class="line">John&#39;s daughter Mary expressed sorrow.</span><br><span class="line">&lt;&#x2F;P&gt;</span><br><span class="line">&lt;&#x2F;TEXT&gt;</span><br><span class="line">&lt;&#x2F;DOC&gt;</span><br></pre></td></tr></table></figure>
+
+<p>现在运行以下命令来检查存储在该Communication中的某些注释：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">concrete-inspect.py --ner --pos --dependency serif_dog-bites-man.concrete</span><br></pre></td></tr></table></figure>
+
+<p>此命令以<a href="http://ufal.mff.cuni.cz/conll2009-st/task-description.html">类似于CoNLL</a>的列格式显示标记化，词性标记，命名实体标记和依赖项解析：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">INDEX       TOKEN   POS     NER     HEAD    DEPREL</span><br><span class="line">-----       -----   ---     ---     ----    ------</span><br><span class="line">1   John    NNP     PER     2       compound</span><br><span class="line">2   Smith   NNP     PER     10      nsubjpass</span><br><span class="line">3   ,       ,</span><br><span class="line">4   manager NN              2       appos</span><br><span class="line">5   of      IN              7       case</span><br><span class="line">6   ACMÉ    NNP     ORG     7       compound</span><br><span class="line">7   INC     NNP     ORG     4       nmod</span><br><span class="line">8   ,       ,</span><br><span class="line">9   was     VBD             10      auxpass</span><br><span class="line">10  bit     NN              0       ROOT</span><br><span class="line">11  by      IN              13      case</span><br><span class="line">12  a       DT              13      det</span><br><span class="line">13  dog     NN              10      nmod</span><br><span class="line">14  on      IN              15      case</span><br><span class="line">15  March   DATE-NNP                13      nmod</span><br><span class="line">16  10th    JJ              15      amod</span><br><span class="line">17  ,       ,</span><br><span class="line">18  2013    CD              13      amod</span><br><span class="line">19  .       .</span><br><span class="line"></span><br><span class="line">1   He      PRP             2       nsubj</span><br><span class="line">2   died    VBD             0       ROOT</span><br><span class="line">3   !       .</span><br><span class="line"></span><br><span class="line">1   John    NNP     PER     3       nmod:poss</span><br><span class="line">2   &#39;s      POS             1       case</span><br><span class="line">3   daughter        NN              5       dep</span><br><span class="line">4   Mary    NNP     PER     5       nsubj</span><br><span class="line">5   expressed       VBD             0       ROOT</span><br><span class="line">6   sorrow  NN              5       dobj</span><br><span class="line">7   .       .</span><br></pre></td></tr></table></figure>
+
+<p>还有一些其他的显示格式，比如ID、元数据、section、实体、提取等。其中，实体的格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  Entity 0-0:</span><br><span class="line">      EntityMention 0-0-0:</span><br><span class="line">          tokens:     John Smith</span><br><span class="line">          text:       John Smith</span><br><span class="line">          entityType: PER</span><br><span class="line">          phraseType: PhraseType.NAME</span><br><span class="line">      EntityMention 0-0-1:</span><br><span class="line">          tokens:     John Smith , manager of ACMÉ INC ,</span><br><span class="line">          text:       John Smith, manager of ACMÉ INC,</span><br><span class="line">          entityType: PER</span><br><span class="line">          phraseType: PhraseType.APPOSITIVE</span><br><span class="line">          child EntityMention #0:</span><br><span class="line">              tokens:     John Smith</span><br><span class="line">              text:       John Smith</span><br><span class="line">              entityType: PER</span><br><span class="line">              phraseType: PhraseType.NAME</span><br><span class="line">          child EntityMention #1:</span><br><span class="line">              tokens:     manager of ACMÉ INC</span><br><span class="line">              text:       manager of ACMÉ INC</span><br><span class="line">              entityType: PER</span><br><span class="line">              phraseType: PhraseType.COMMON_NOUN</span><br><span class="line">      EntityMention 0-0-2:</span><br><span class="line">          tokens:     manager of ACMÉ INC</span><br><span class="line">          text:       manager of ACMÉ INC</span><br><span class="line">          entityType: PER</span><br><span class="line">          phraseType: PhraseType.COMMON_NOUN</span><br><span class="line">      EntityMention 0-0-3:</span><br><span class="line">          tokens:     He</span><br><span class="line">          text:       He</span><br><span class="line">          entityType: PER</span><br><span class="line">          phraseType: PhraseType.PRONOUN</span><br><span class="line">      EntityMention 0-0-4:</span><br><span class="line">          tokens:     John</span><br><span class="line">          text:       John</span><br><span class="line">          entityType: PER.Individual</span><br><span class="line">          phraseType: PhraseType.NAME</span><br><span class="line"></span><br><span class="line">  Entity 0-1:</span><br><span class="line">      EntityMention 0-1-0:</span><br><span class="line">          tokens:     ACMÉ INC</span><br><span class="line">          text:       ACMÉ INC</span><br><span class="line">          entityType: ORG</span><br><span class="line">          phraseType: PhraseType.NAME</span><br><span class="line"></span><br><span class="line">  Entity 0-2:</span><br><span class="line">      EntityMention 0-2-0:</span><br><span class="line">          tokens:     John &#39;s daughter Mary</span><br><span class="line">          text:       John&#39;s daughter Mary</span><br><span class="line">          entityType: PER.Individual</span><br><span class="line">          phraseType: PhraseType.NAME</span><br><span class="line">          child EntityMention #0:</span><br><span class="line">              tokens:     Mary</span><br><span class="line">              text:       Mary</span><br><span class="line">              entityType: PER</span><br><span class="line">              phraseType: PhraseType.OTHER</span><br><span class="line">      EntityMention 0-2-1:</span><br><span class="line">          tokens:     daughter</span><br><span class="line">          text:       daughter</span><br><span class="line">          entityType: PER</span><br><span class="line">          phraseType: PhraseType.COMMON_NOUN</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Entity Set 1 (Serif: doc-values):</span><br><span class="line">  Entity 1-0:</span><br><span class="line">      EntityMention 1-0-0:</span><br><span class="line">          tokens:     March 10th , 2013</span><br><span class="line">          text:       March 10th, 2013</span><br><span class="line">          entityType: TIMEX2.TIME</span><br><span class="line">          phraseType: PhraseType.OTHER</span><br></pre></td></tr></table></figure>
+
+<p>说明文档见<a href="https://concrete-python.readthedocs.io/en/stable/README.html">https://concrete-python.readthedocs.io/en/stable/README.html</a></p>
+<p>感觉主要是在几个数据集上用各种工具集成的命令和注解文档。</p>
+<p>数据集有：</p>
+<ol>
+<li><p>English Gigaword v5</p>
+<p>Gigaword语料库包含45亿字，它们来自于1994-2010年1000万篇英文新闻通讯文章。</p>
+<p>来源：Parker and Robert et al. English Gigaword Fifth Edition LDC2011T07. Web Download, Philadelphia: Linguistic Data Consortium, 2011.</p>
+</li>
+<li><p>Annotated NYT（纽约时报注释语料库）</p>
+<p>纽约时报注释语料库是1987-2007年《纽约时报》180万篇文章的集合。《纽约时报》的工作人员用近50种元数据（metadata）丰富了这些文章。这些元数据对不同类型的文件、发稿台和文章中提到的重要人物、地点和组织的列表进行分级分类。</p>
+<p>来源：Evan Sandhaus. The New York Times Annotated Corpus LDC2008T19. Web Download, Philadelphia: Linguistic Data Consortium, 2008.</p>
+</li>
+<li><p>ColdStart</p>
+<p>2014年的ColdStart国际知识图谱构建比赛是基于一个大约有5万个文档的语料库，其中大概70%来自Gigaword语料库，其余是非正式博客和论坛帖子的集合。这个集合由ColdStart组织者用BBN的Serif工具进行预处理，然后发布的。</p>
+</li>
+<li><p>Wikipedia </p>
+<p>维基百科数据。</p>
+</li>
+</ol>
+<p>注：语言数据协会（LDC）是由大学，图书馆，公司和政府研究实验室组成的开放性协会，旨在解决语言技术研究和开发中面临的关键数据短缺问题。</p>
+<p>LDC上大部分数据都要收费，从数百美元到数千美元不等，但也有一些免费数据。无论需求数据是否免费，都需要在网站上注册并加入组织。</p>
+<p>注册成功后，网站会提醒你的申请信息已经发给管理员。这时候只需要联系本校管理员帮你通过验证加入组织即可。</p>
+<p>如果组织是会员，应该可以免费下载数据集。</p>
+]]></content>
+      <tags>
+        <tag>调研报告</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>聊天机器人系统</title>
     <url>/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<p>本文介绍了聊天机器人的研究背景、系统框架、实现方法（检索式聊天机器人和生成式聊天机器人）中有代表性的经典模型、两种实现方法的比较还有聊天机器人领域研究的挑战和展望</p>
