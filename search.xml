@@ -1,48 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Bert模型是否适用于文本相似度计算任务</title>
-    <url>/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/</url>
-    <content><![CDATA[<p>随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。</p>
-<a id="more"></a>
-
-<h3 id="Bert模型是否适用于文本相似度计算任务"><a href="#Bert模型是否适用于文本相似度计算任务" class="headerlink" title="Bert模型是否适用于文本相似度计算任务"></a>Bert模型是否适用于文本相似度计算任务</h3><p>先说结论：我的这个文本相似度计算任务是通过网络爬虫获取的数据，是没有相似度标签的（比如0/1表示不相似/相似），是无监督训练。对于这种情况，不能够通过fine-tune（指的是用别人训练好的模型，即预训练模型，加上我们自己的数据，来训练新的模型）进行微调，用Bert提取句向量再通过余弦函数计算相似度的效果并不好甚至不如用词嵌入模型Glove的效果好。</p>
-<p>本文主要参考了2019年8月底发表在EMNLP会议上的一篇论文：</p>
-<blockquote>
-<p>Reimers N, Gurevych I. Sentence-bert: Sentence embeddings using siamese bert-networks[J]. arXiv preprint arXiv:1908.10084, 2019.</p>
-</blockquote>
-<p>论文中指出随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型均不适合语义相似度搜索，也不适合非监督任务。</p>
-<p>解决聚类和语义相似度计算的一种常见方法是将每个句子映射到一个向量空间，使得语义相似的句子很接近。有人会尝试将整个句子输入预训练模型中，得到该句的句向量，然后作为句子的句向量表示，但是在这篇论文中指出这样得到的句向量表达语义信息的能力并不好，也就是说，两个相似的句子，得到的句向量可能会有很大的差别。</p>
-<p>文中还列出了对比实验结果，这里我们主要关注<strong>无监督</strong>训练结果：</p>
-<h6 id="无监督训练"><a href="#无监督训练" class="headerlink" title="无监督训练"></a>无监督训练</h6><ul>
-<li><p>文中的评测采用的是STS 2012-2016五年的任务数据、STS benchmark数据(2017年构建)、SICK-Relatedness数据，这些数据集都是标好label的句子对，label表示句子之间的相互关系，范围为0~5（0是没什么关系，5表示句子非常相近）。</p>
-</li>
-<li><p>无监督评测不采用这些数据集的任何训练数据，直接用训练好的模型得到句向量+余弦函数来计算句子间的相似度，然后通过斯皮尔曼等级相关系数来衡量模型的优劣。实验结果如下：</p>
-<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png" alt="论文结果"></p>
-<p>结果显示直接采用BERT的输出结果，效果并不好，甚至不如GloVe嵌入向量的效果好；后两栏表示采用本文的孪生网络在NLI数据集上fine-tune后的模型效果，会明显要好很多，但是SBERT和SRoBERTa差异不大。</p>
-<p><strong>注意：</strong></p>
-<ul>
-<li>CLS和avg是本文尝试用Bert模型得到句向量的不同方法：CLS是以第一个特征位置向量作为句向量；avg是取输出层的所有字向量的平均值作为句向量。</li>
-<li>InferSent是一种句子embeddings方法，它为英语句子提供语理解。</li>
-<li>Universal Sentence Encoder：通用句子编码器。</li>
-<li>base/large：是Bert模型的两种类型，一个是12层Transformer，一个是24层Transformer。</li>
-</ul>
-</li>
-</ul>
-<h6 id="有监督训练"><a href="#有监督训练" class="headerlink" title="有监督训练"></a>有监督训练</h6><ul>
-<li><p>但另一方面，如果是有监督训练，经过fine-tune，预训练模型的效果都有很大的提升，其中Bert达到了最好的效果：</p>
-<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C2.png" alt="论文结果2"></p>
-<ul>
-<li>有监督STS数据集采用的是STS benchmark（简称STSb）数据集，就是上面提到的2017年抽取构建的，是当前比较流行的有监督STS数据集。它主要来自三个方面：字幕、新闻、论坛，包含8,628个句子对，训练集5,749，验证集1,500，测试集1,379。BERT将句子对同时输入网络，最后再接一个简单的回归模型作为输出，目前在此数据集上取得了最好的效果。</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>文本相似度计算</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>命名实体识别（NER）调研</title>
     <url>/2020/11/27/NER/</url>
     <content><![CDATA[<p>本文介绍了现有的一些关于命名实体识别技术的研究方法，命名实体识别技术是信息抽取技术的一部分，是很多任务的基础工作。</p>
@@ -169,6 +127,48 @@
 ]]></content>
       <tags>
         <tag>NER</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Bert模型是否适用于文本相似度计算任务</title>
+    <url>/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/</url>
+    <content><![CDATA[<p>随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。</p>
+<a id="more"></a>
+
+<h3 id="Bert模型是否适用于文本相似度计算任务"><a href="#Bert模型是否适用于文本相似度计算任务" class="headerlink" title="Bert模型是否适用于文本相似度计算任务"></a>Bert模型是否适用于文本相似度计算任务</h3><p>先说结论：我的这个文本相似度计算任务是通过网络爬虫获取的数据，是没有相似度标签的（比如0/1表示不相似/相似），是无监督训练。对于这种情况，不能够通过fine-tune（指的是用别人训练好的模型，即预训练模型，加上我们自己的数据，来训练新的模型）进行微调，用Bert提取句向量再通过余弦函数计算相似度的效果并不好甚至不如用词嵌入模型Glove的效果好。</p>
+<p>本文主要参考了2019年8月底发表在EMNLP会议上的一篇论文：</p>
+<blockquote>
+<p>Reimers N, Gurevych I. Sentence-bert: Sentence embeddings using siamese bert-networks[J]. arXiv preprint arXiv:1908.10084, 2019.</p>
+</blockquote>
+<p>论文中指出随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型均不适合语义相似度搜索，也不适合非监督任务。</p>
+<p>解决聚类和语义相似度计算的一种常见方法是将每个句子映射到一个向量空间，使得语义相似的句子很接近。有人会尝试将整个句子输入预训练模型中，得到该句的句向量，然后作为句子的句向量表示，但是在这篇论文中指出这样得到的句向量表达语义信息的能力并不好，也就是说，两个相似的句子，得到的句向量可能会有很大的差别。</p>
+<p>文中还列出了对比实验结果，这里我们主要关注<strong>无监督</strong>训练结果：</p>
+<h6 id="无监督训练"><a href="#无监督训练" class="headerlink" title="无监督训练"></a>无监督训练</h6><ul>
+<li><p>文中的评测采用的是STS 2012-2016五年的任务数据、STS benchmark数据(2017年构建)、SICK-Relatedness数据，这些数据集都是标好label的句子对，label表示句子之间的相互关系，范围为0~5（0是没什么关系，5表示句子非常相近）。</p>
+</li>
+<li><p>无监督评测不采用这些数据集的任何训练数据，直接用训练好的模型得到句向量+余弦函数来计算句子间的相似度，然后通过斯皮尔曼等级相关系数来衡量模型的优劣。实验结果如下：</p>
+<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png" alt="论文结果"></p>
+<p>结果显示直接采用BERT的输出结果，效果并不好，甚至不如GloVe嵌入向量的效果好；后两栏表示采用本文的孪生网络在NLI数据集上fine-tune后的模型效果，会明显要好很多，但是SBERT和SRoBERTa差异不大。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>CLS和avg是本文尝试用Bert模型得到句向量的不同方法：CLS是以第一个特征位置向量作为句向量；avg是取输出层的所有字向量的平均值作为句向量。</li>
+<li>InferSent是一种句子embeddings方法，它为英语句子提供语理解。</li>
+<li>Universal Sentence Encoder：通用句子编码器。</li>
+<li>base/large：是Bert模型的两种类型，一个是12层Transformer，一个是24层Transformer。</li>
+</ul>
+</li>
+</ul>
+<h6 id="有监督训练"><a href="#有监督训练" class="headerlink" title="有监督训练"></a>有监督训练</h6><ul>
+<li><p>但另一方面，如果是有监督训练，经过fine-tune，预训练模型的效果都有很大的提升，其中Bert达到了最好的效果：</p>
+<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C2.png" alt="论文结果2"></p>
+<ul>
+<li>有监督STS数据集采用的是STS benchmark（简称STSb）数据集，就是上面提到的2017年抽取构建的，是当前比较流行的有监督STS数据集。它主要来自三个方面：字幕、新闻、论坛，包含8,628个句子对，训练集5,749，验证集1,500，测试集1,379。BERT将句子对同时输入网络，最后再接一个简单的回归模型作为输出，目前在此数据集上取得了最好的效果。</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>文本相似度计算</tag>
       </tags>
   </entry>
   <entry>
@@ -548,7 +548,7 @@
 <li>这一种方法和google knowledge graph的request差不多，都是用URL来访问</li>
 <li>用这种方法来访问并不是连接到维基百科的某个词条，而是一个单独的网页。这个不需要自己的apikey。感觉比较方便。并且这时返回的是一个结构化的网页，阅读性较好。如下图，会有很多属性-值这种关系</li>
 </ul>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass2.png" alt="karenBass2"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/KarenBass2.png" alt="karenBass2"></p>
 <ul>
 <li>不过也可能不全，比如下图的核心小组成员，其实只列出了一条。</li>
 </ul>
@@ -556,13 +556,12 @@
 </li>
 <li><p>数据转储方式</p>
 <p>这里提供两种方式：</p>
-<ul>
-<li><p>wikidata提供了API接口，用于通过实体的标识码获取实体的详细信息，主要包括与相关的其他实体的关系信息。 此API可以将结果以多种格式返回，例如以HTTP GET的方式获取标识码为Q461739的实体的详细信息并指定以json格式返回的url为：</p>
+<h4 id="（1）API接口"><a href="#（1）API接口" class="headerlink" title="（1）API接口"></a>（1）API接口</h4><p>wikidata提供了API接口，用于通过实体的标识码获取实体的详细信息，主要包括与相关的其他实体的关系信息。 此API可以将结果以多种格式返回，例如以HTTP GET的方式获取标识码为Q461739的实体的详细信息并指定以json格式返回的url为：</p>
 <p><a href="https://www.wikidata.org/wiki/Special:EntityData/Q461739.json">https://www.wikidata.org/wiki/Special:EntityData/Q461739.json</a></p>
 <p>json格式的返回数据为：</p>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass4.png" alt="karenBass4"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/KarenBass4.png" alt="karenBass4"></p>
 <p>用在线json格式化工具可将其格式化：</p>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass5.png" alt="karenBass5"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/KarenBass5.png" alt="karenBass5"></p>
 <p>其中，json格式的entity顶级字段有：</p>
 <ul>
 <li>id: 实体标识码。</li>
@@ -599,7 +598,9 @@
 </ul>
 </li>
 </ul>
-<p><strong>解析claims：</strong></p>
+</li>
+</ol>
+<p>   <strong>解析claims：</strong></p>
 <ul>
 <li><p>json字段，除了claims顶级字段，其它信息都可以直接提取利用。</p>
 </li>
@@ -612,29 +613,24 @@
 <li><p>另外此claim的type为statment，因此含有一个参考资料列表-references。</p>
 </li>
 </ul>
-</li>
+<p>   <strong>解析难点：</strong></p>
+<ul>
+<li>属性都是以属性ID表示的，不能直接解析属性的含义</li>
+<li>关联实体是以实体ID表示的，需要多次的查询-解析</li>
+<li>不同种类实体含有的属性不同</li>
 </ul>
+<p>   <strong>其他格式：</strong></p>
+<p>   用<a href="https://www.wikidata.org/wiki/Special:EntityData/Q461739.rdf%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E4%B8%8B%E8%BD%BD%E8%AF%A5%E5%AE%9E%E4%BD%93%E7%9A%84rdf%E5%8E%8B%E7%BC%A9%E5%8C%85%EF%BC%8C%E5%8E%8B%E7%BC%A9%E5%8C%85%E9%87%8C%E9%9D%A2%E5%8C%85%E5%90%AB%E5%90%84%E4%B8%AA%E5%9B%BD%E5%AE%B6%E5%9C%B0%E5%8C%BA%E6%96%87%E5%AD%97%E7%9A%84rdf%E3%80%82">https://www.wikidata.org/wiki/Special:EntityData/Q461739.rdf可以直接下载该实体的rdf压缩包，压缩包里面包含各个国家地区文字的rdf。</a></p>
+<h4 id="（2）下载完整数据库"><a href="#（2）下载完整数据库" class="headerlink" title="（2）下载完整数据库"></a>（2）下载完整数据库</h4><p>   Wikidata提供了完整的数据库下载，因此可以下载完整的数据库（<a href="https://dumps.wikimedia.org/wikidatawiki/entities/%EF%BC%89%EF%BC%8C%E7%84%B6%E5%90%8E%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%AE%9E%E4%BD%93%E6%90%9C%E7%B4%A2%E6%9C%8D%E5%8A%A1%E3%80%82%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4%E6%98%AF%EF%BC%9A">https://dumps.wikimedia.org/wikidatawiki/entities/），然后搭建自己的实体搜索服务。具体步骤是：</a></p>
+<ul>
+<li><p>数据下载</p>
 </li>
-</ol>
-<pre><code> **解析难点：**
-
- * 属性都是以属性ID表示的，不能直接解析属性的含义
- * 关联实体是以实体ID表示的，需要多次的查询-解析
- * 不同种类实体含有的属性不同
-
- **其他格式：**
-
- 用https://www.wikidata.org/wiki/Special:EntityData/Q461739.rdf可以直接下载该实体的rdf压缩包，压缩包里面包含各个国家地区文字的rdf。</code></pre>
-<ul>
-<li><p>Wikidata提供了完整的数据库下载，因此可以下载完整的数据库（<a href="https://dumps.wikimedia.org/wikidatawiki/entities/%EF%BC%89%EF%BC%8C%E7%84%B6%E5%90%8E%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%AE%9E%E4%BD%93%E6%90%9C%E7%B4%A2%E6%9C%8D%E5%8A%A1%E3%80%82">https://dumps.wikimedia.org/wikidatawiki/entities/），然后搭建自己的实体搜索服务。</a></p>
-<ul>
-<li>数据下载</li>
-<li>数据导入</li>
-<li>搭建搜索服务</li>
+<li><p>数据导入</p>
+</li>
+<li><p>搭建搜索服务</p>
+</li>
 </ul>
 <p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/database.png" alt="database"></p>
-</li>
-</ul>
 <h2 id="论文调研"><a href="#论文调研" class="headerlink" title="论文调研"></a>论文调研</h2><p>《Concretely Annotated Corpora》开发了CONCRETE来记录和共享注释文档。</p>
 <p>主页见<a href="https://hltcoe.github.io/%E3%80%82">https://hltcoe.github.io/。</a></p>
 <p>他给出了一个serif_dog-bites-man.concrete，可以用concrete中相关的工具查看文档内容：</p>
