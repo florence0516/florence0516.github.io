@@ -548,11 +548,11 @@
 <li>这一种方法和google knowledge graph的request差不多，都是用URL来访问</li>
 <li>用这种方法来访问并不是连接到维基百科的某个词条，而是一个单独的网页。这个不需要自己的apikey。感觉比较方便。并且这时返回的是一个结构化的网页，阅读性较好。如下图，会有很多属性-值这种关系</li>
 </ul>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass2.png" alt="karenBass"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass2.png" alt="karenBass2"></p>
 <ul>
 <li>不过也可能不全，比如下图的核心小组成员，其实只列出了一条。</li>
 </ul>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass3.png" alt="karenBass"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass3.png" alt="karenBass3"></p>
 </li>
 <li><p>数据转储方式</p>
 <p>这里提供两种方式：</p>
@@ -560,9 +560,9 @@
 <li><p>wikidata提供了API接口，用于通过实体的标识码获取实体的详细信息，主要包括与相关的其他实体的关系信息。 此API可以将结果以多种格式返回，例如以HTTP GET的方式获取标识码为Q461739的实体的详细信息并指定以json格式返回的url为：</p>
 <p><a href="https://www.wikidata.org/wiki/Special:EntityData/Q461739.json">https://www.wikidata.org/wiki/Special:EntityData/Q461739.json</a></p>
 <p>json格式的返回数据为：</p>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass4.png" alt="karenBass"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass4.png" alt="karenBass4"></p>
 <p>用在线json格式化工具可将其格式化：</p>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass5.png" alt="karenBass"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/karenBass5.png" alt="karenBass5"></p>
 <p>其中，json格式的entity顶级字段有：</p>
 <ul>
 <li>id: 实体标识码。</li>
@@ -581,12 +581,12 @@
 <p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims.png" alt="claims"></p>
 </li>
 <li><p>claim 包含一条主体信息(main Snak)以及一些修饰信息(qualifier Snaks)。</p>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims3.png" alt="claims"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims3.png" alt="claims3"></p>
 </li>
 <li><p>statement是含有参考资料（reference）的claim。</p>
 </li>
 <li><p>每个claim总是与一个属性(property)关联(claim是关于此property的)。并且在一个实体中可以有多条claim与同一property关联。</p>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims2.png" alt="claims"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims2.png" alt="claims2"></p>
 </li>
 <li><p>claim含有以下字段:</p>
 <ul>
@@ -604,10 +604,10 @@
 <li><p>json字段，除了claims顶级字段，其它信息都可以直接提取利用。</p>
 </li>
 <li><p>claims字段下为一个字典，字典的键为属性(property)，示例中只有一个key：P21。通过属性页查询url：<a href="https://www.wikidata.org/wiki/Property:P21%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%9F%A5%E9%81%93%E6%AD%A4%E5%B1%9E%E6%80%A7%E8%A1%A8%E7%A4%BA%E6%80%A7%E5%88%AB%E3%80%82">https://www.wikidata.org/wiki/Property:P21，可以知道此属性表示性别。</a></p>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims4.png" alt="claims"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims4.png" alt="claims4"></p>
 </li>
 <li><p>与此属性关联的claim只有一个，mainsnak为此claim的主体信息，datavalue中的value为”Q6581072”，通过<a href="https://www.wikidata.org/wiki/Q6581072%E5%8F%AF%E6%9F%A5%E8%AF%A2%E5%88%B0%E8%AF%A5claim%E8%A1%A8%E7%A4%BA%E5%AE%9E%E4%BD%93%E7%9A%84%E6%80%A7%E5%88%AB%E4%B8%BA%E5%A5%B3%E3%80%82datavalue%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%B8%BA%E5%85%B6%E5%AE%83%E5%85%B3%E8%81%94%E5%AE%9E%E4%BD%93%E6%8F%90%E4%BE%9B%E5%AE%9E%E4%BD%93id%E3%80%82">https://www.wikidata.org/wiki/Q6581072可查询到该claim表示实体的性别为女。datavalue也可以为其它关联实体提供实体id。</a></p>
-<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims5.png" alt="claims"></p>
+<p><img src="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/claims5.png" alt="claims5"></p>
 </li>
 <li><p>另外此claim的type为statment，因此含有一个参考资料列表-references。</p>
 </li>
