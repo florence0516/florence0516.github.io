@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="继续学习周志华教授的西瓜书，读完第四章：决策树，绘制了思维导图，方便日后复习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="西瓜书第四章思维导图">
+<meta property="og:url" content="http://example.com/2021/03/14/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/index.html">
+<meta property="og:site_name" content="Florence&#39;s Blog">
+<meta property="og:description" content="继续学习周志华教授的西瓜书，读完第四章：决策树，绘制了思维导图，方便日后复习。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/03/14/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/%E5%86%B3%E7%AD%96%E6%A0%91.png">
+<meta property="article:published_time" content="2021-03-14T08:16:08.000Z">
+<meta property="article:modified_time" content="2021-03-14T08:22:20.472Z">
+<meta property="article:author" content="Florence">
+<meta property="article:tag" content="西瓜书笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/03/14/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/%E5%86%B3%E7%AD%96%E6%A0%91.png">
+
+<link rel="canonical" href="http://example.com/2021/03/14/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>西瓜书第四章思维导图 | Florence's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Florence's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/14/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.JPG">
+      <meta itemprop="name" content="Florence">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Florence's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          西瓜书第四章思维导图
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-14 16:16:08 / 修改时间：16:22:20" itemprop="dateCreated datePublished" datetime="2021-03-14T16:16:08+08:00">2021-03-14</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>继续学习周志华教授的西瓜书，读完第四章：决策树，绘制了思维导图，方便日后复习。</p>
+<a id="more"></a>
+
+<h1 id="决策树思维导图"><a href="#决策树思维导图" class="headerlink" title="决策树思维导图"></a>决策树思维导图</h1><p><img src="/2021/03/14/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/%E5%86%B3%E7%AD%96%E6%A0%91.png" alt="西瓜书第四章思维导图"></p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="决策树是一类常见的机器学习方法。"><a href="#决策树是一类常见的机器学习方法。" class="headerlink" title="决策树是一类常见的机器学习方法。"></a>决策树是一类常见的机器学习方法。</h3><ul>
+<li>以二分类任务为例，我们希望从给定训练数据集学得一个模型用以对新示例进行分类，这个把样本分类的任务，可看作对“当前样本属于正类吗？”这个问题的“决策”或“判定”过程。</li>
+<li>决策过程的最终结论对应了我们所希望的判定结果。</li>
+<li>决策过程中提出的每个判定问题都是对某个属性的“测试”。</li>
+<li>每个测试的结果或是导出最终结论，或是导出进一步的判定问题，其考虑范围是在上次决策结果的限定范围之内。</li>
+</ul>
+<h3 id="顾名思义，决策树是基于树结构来进行决策的。"><a href="#顾名思义，决策树是基于树结构来进行决策的。" class="headerlink" title="顾名思义，决策树是基于树结构来进行决策的。"></a>顾名思义，决策树是基于树结构来进行决策的。</h3><ul>
+<li><p>一般的，一棵决策树包含一个根节点、若干个内部结点和若干个叶结点。</p>
+<ul>
+<li>叶结点对应于决策结果，其他每个结点则对应于一个属性测试；</li>
+<li>根结点包含样本全集；</li>
+<li>每个结点包含的样本集合根据属性测试的结果被划分到子结点中；</li>
+<li>从根结点到每个叶结点的路径对应了一个判定测试序列。</li>
+</ul>
+</li>
+</ul>
+<h3 id="决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。"><a href="#决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。" class="headerlink" title="决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。"></a>决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。</h3><ul>
+<li><p>基本流程</p>
+<ul>
+<li><p>遵循“分而治之”策略。</p>
+</li>
+<li><p>决策树的生成是一个递归过程。</p>
+<ul>
+<li><p>在决策树基本算法中，有三种情形会导致递归返回：</p>
+<ul>
+<li><p>当前结点包含的样本全属于同一类别，无需划分；</p>
+<ul>
+<li>标记当前结点为叶结点，并将其类别设定为该类别。</li>
+</ul>
+</li>
+<li><p>当前属性集为空，或是所有样本在所有属性上取值相同，无法划分；</p>
+<ul>
+<li><p>标记当前结点为叶结点，并将其类别设定为该结点所含样本最多的类别。</p>
+</li>
+<li><p>处理实质</p>
+<ul>
+<li>利用当前结点的后验分布</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>当前结点包含的样本集合为空，不能划分。</p>
+<ul>
+<li><p>标记当前结点为叶结点，但将其类别设定为其父结点所含样本数最多的类别。</p>
+</li>
+<li><p>处理实质</p>
+<ul>
+<li>把父结点的样本分布作为当前结点的先验分布。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="划分选择"><a href="#划分选择" class="headerlink" title="划分选择"></a>划分选择</h2><h3 id="决策树学习的关键是“如何选择最优划分属性”。"><a href="#决策树学习的关键是“如何选择最优划分属性”。" class="headerlink" title="决策树学习的关键是“如何选择最优划分属性”。"></a>决策树学习的关键是“如何选择最优划分属性”。</h3><ul>
+<li><p>随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”越来越高。</p>
+<ul>
+<li><p>信息增益</p>
+<ul>
+<li><p>“信息熵”是度量样本集合纯度最常用的一种指标。</p>
+<ul>
+<li>信息熵的值越小，当前样本集合的纯度越高。信息熵最小值为0。</li>
+<li>根据信息熵可以计算出用某种属性对样本集进行划分所获得的“信息增益”。</li>
+<li>一般而言，信息增益越大，意味着使用该种属性来进行划分所获得的“纯度提升”越大。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>增益率</p>
+<ul>
+<li>为解决信息增益准则偏好可能带来的不利影响所提出</li>
+<li>著名的C4.5决策树算法使用“增益率”来选择最优划分属性。</li>
+</ul>
+</li>
+<li><p>基尼指数</p>
+<ul>
+<li><p>CART决策树使用“基尼指数”来选择划分属性，CART可用于分类和回归任务。</p>
+</li>
+<li><p>数据集的纯度可用基尼值来度量。</p>
+<ul>
+<li>基尼值反映了从数据集中随机抽取两个样本，其类别标记不一致的概率。</li>
+<li>基尼指数越小，则数据集的纯度越高</li>
+</ul>
+</li>
+<li><p>基尼指数在基尼值的基础上引入了权重计算</p>
+<ul>
+<li>因此，我们在侯选属性集合中，选择那个使得划分后基尼指数最小的属性作为最优划分属性。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="剪枝处理"><a href="#剪枝处理" class="headerlink" title="剪枝处理"></a>剪枝处理</h2><h3 id="剪枝是决策树学习算法对付“过拟合”的主要手段。"><a href="#剪枝是决策树学习算法对付“过拟合”的主要手段。" class="headerlink" title="剪枝是决策树学习算法对付“过拟合”的主要手段。"></a>剪枝是决策树学习算法对付“过拟合”的主要手段。</h3><ul>
+<li><p>决策树分支过多，可能使训练样本学的“太好”了，把一些样本自身的特点当作所有数据都具有的一般性质而导致过拟合。因此可通过主动去掉一些分支来降低过拟合的风险。</p>
+<ul>
+<li><p>预剪枝</p>
+<ul>
+<li><p>预剪枝是指在决策树生成过程中，对每个结点在划分前先进行估计，若当前节点的划分不能带来决策树泛化性能提升，则停止划分并将当前结点标记为叶结点。</p>
+<ul>
+<li><p>采用2.2节介绍的性能评估方法。划分数据集为训练集和验证集，训练集用于标记节点类别，验证集用于估计泛化能力。</p>
+<ul>
+<li><p>结论</p>
+<ul>
+<li><p>只要不能提升验证集精度（降低或不改变）都会禁止节点划分。</p>
+</li>
+<li><p>预剪枝使决策树的很多分支都没有“展开”，这不仅降低了过拟合的风险，还显著减少了决策树的训练时间开销和测试时间开销。</p>
+</li>
+<li><p>但有些分支的当前划分虽不能提升泛化性能、甚至可能导致泛化性能暂时下降，但在其基础上进行的后续划分却有可能导致性能显著提高。</p>
+<ul>
+<li>预剪枝基于“贪心”本质禁止这些分支展开，给预剪枝决策树带来了欠拟合的风险。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>后剪枝</p>
+<ul>
+<li><p>后剪枝是先从训练集生成一颗完整的决策树，然后自底向上地对非叶节点进行考察，若该结点对应的子树替换为叶结点能带来决策树泛化性能提升，则将该子树替换为叶结点。</p>
+<ul>
+<li><p>采用2.2节介绍的性能评估方法。划分数据集为训练集和验证集，训练集用于标记节点类别，验证集用于估计泛化能力。</p>
+<ul>
+<li><p>结论</p>
+<ul>
+<li><p>当剪枝使验证集精度提高时，进行剪枝</p>
+</li>
+<li><p>当剪枝使验证集精度降低时，不能剪枝</p>
+</li>
+<li><p>当剪枝使验证集精度不变时，可以剪枝也可以不剪枝</p>
+<ul>
+<li>但根据奥卡姆剃刀准则，剪枝后的模型更好。因此，实际决策树算法在这种情况下通常要进行剪枝。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="连续与缺失值"><a href="#连续与缺失值" class="headerlink" title="连续与缺失值"></a>连续与缺失值</h2><h3 id="连续值处理"><a href="#连续值处理" class="headerlink" title="连续值处理"></a>连续值处理</h3><ul>
+<li><p>在决策树学习中使用连续属性</p>
+<ul>
+<li><p>问题</p>
+<ul>
+<li>连续属性的可取值数目不再有限，因此，不能直接根据连续属性的可取值来对节点进行划分。</li>
+</ul>
+</li>
+<li><p>解决</p>
+<ul>
+<li><p>连续属性离散化技术</p>
+<ul>
+<li><p>最简单的策略是采用二分法对连续属性进行处理，这是C4.5决策树算法中采用的机制。</p>
+<ul>
+<li>把连续区间的中位点作为候选划分点。按照这个点t进行二分，不大于t的样本记作D-，大于t的样本记作D+。然后可像离散属性值一样来考察这些划分点，选取最优的划分点进行样本集合的划分。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>注意</p>
+<ul>
+<li>与离散属性不同，若当前节点划分属性为连续属性，该属性还可作为其后代节点的划分属性。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h3><ul>
+<li><p>现实任务中常会遇到不完整样本，即样本的某些属性值缺失。如果简单地放弃不完整样本，仅使用无缺失值的样本来进行学习，显然是对数据信息极大的浪费。因此，有必要考虑利用有缺失属性值的训练样例来进行学习。</p>
+<ul>
+<li><p>待解决的问题</p>
+<ul>
+<li><p>如何在属性值缺失的情况下进行划分属性选择？</p>
+<ul>
+<li>可根据样本集中在该属性上没有缺失值的样本子集来判断该属性的优劣。</li>
+</ul>
+</li>
+<li><p>给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？</p>
+<ul>
+<li>让同一个样本以不同的概率划入到不同的子结点中。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="多变量决策树"><a href="#多变量决策树" class="headerlink" title="多变量决策树"></a>多变量决策树</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><ul>
+<li>若把每个属性视为坐标空间中的一个坐标轴，则d个属性描述的样本就对应了d维空间中的一个数据点，对样本分类意味着在这个坐标空间中寻找不同类样本之间的分类边界。</li>
+<li>决策树所形成的分类边界有一个明显特点：轴平行，即它的分类边界由若干个与坐标轴平行的分段组成。</li>
+<li>分类边界的每一段都是与坐标轴平行的，这样的分类边界使得学习结果有较好的可解释性，因为每一段划分都直接对应了某个属性取值。</li>
+<li>但在学习任务的真实分类边界比较复杂时，必须使用很多段划分才能获得较好的近似。此时的决策树会相当复杂，由于要进习大量的属性测试，预测时间开销会很大。</li>
+<li>若能使用斜的划分边界，则决策树模型将大为简化。</li>
+</ul>
+<h3 id="多变量决策树就是能实现这样的“斜划分”甚至更复杂划分的决策树。因此也称“斜决策树”。"><a href="#多变量决策树就是能实现这样的“斜划分”甚至更复杂划分的决策树。因此也称“斜决策树”。" class="headerlink" title="多变量决策树就是能实现这样的“斜划分”甚至更复杂划分的决策树。因此也称“斜决策树”。"></a>多变量决策树就是能实现这样的“斜划分”甚至更复杂划分的决策树。因此也称“斜决策树”。</h3><ul>
+<li><p>定义</p>
+<ul>
+<li>在多变量决策树中，非叶节点不再是仅对某个属性，而是对属性的线性组合进行测试。</li>
+<li>与传统的“单变量决策树”不同，在多变量决策树的学习过程中，不是为每个非叶节点寻找一个最优划分属性，而是试图建立一个合适的线性分类器。</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 西瓜书笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/03/%E7%9F%A5%E8%AF%86%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A/" rel="prev" title="知识库、数据集调研报告">
+      <i class="fa fa-chevron-left"></i> 知识库、数据集调研报告
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/" rel="next" title="检索式开放领域对话系统研究综述梳理笔记">
+      检索式开放领域对话系统研究综述梳理笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text">决策树思维导图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E6%98%AF%E4%B8%80%E7%B1%BB%E5%B8%B8%E8%A7%81%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E3%80%82"><span class="nav-number">1.1.1.</span> <span class="nav-text">决策树是一类常见的机器学习方法。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%BE%E5%90%8D%E6%80%9D%E4%B9%89%EF%BC%8C%E5%86%B3%E7%AD%96%E6%A0%91%E6%98%AF%E5%9F%BA%E4%BA%8E%E6%A0%91%E7%BB%93%E6%9E%84%E6%9D%A5%E8%BF%9B%E8%A1%8C%E5%86%B3%E7%AD%96%E7%9A%84%E3%80%82"><span class="nav-number">1.1.2.</span> <span class="nav-text">顾名思义，决策树是基于树结构来进行决策的。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%9A%84%E7%9B%AE%E7%9A%84%E6%98%AF%E4%B8%BA%E4%BA%86%E4%BA%A7%E7%94%9F%E4%B8%80%E6%A3%B5%E6%B3%9B%E5%8C%96%E8%83%BD%E5%8A%9B%E5%BC%BA%EF%BC%8C%E5%8D%B3%E5%A4%84%E7%90%86%E6%9C%AA%E8%A7%81%E7%A4%BA%E4%BE%8B%E8%83%BD%E5%8A%9B%E5%BC%BA%E7%9A%84%E5%86%B3%E7%AD%96%E6%A0%91%E3%80%82"><span class="nav-number">1.1.3.</span> <span class="nav-text">决策树学习的目的是为了产生一棵泛化能力强，即处理未见示例能力强的决策树。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%92%E5%88%86%E9%80%89%E6%8B%A9"><span class="nav-number">1.2.</span> <span class="nav-text">划分选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%85%B3%E9%94%AE%E6%98%AF%E2%80%9C%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E6%9C%80%E4%BC%98%E5%88%92%E5%88%86%E5%B1%9E%E6%80%A7%E2%80%9D%E3%80%82"><span class="nav-number">1.2.1.</span> <span class="nav-text">决策树学习的关键是“如何选择最优划分属性”。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E5%A4%84%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">剪枝处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E6%98%AF%E5%86%B3%E7%AD%96%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E5%AF%B9%E4%BB%98%E2%80%9C%E8%BF%87%E6%8B%9F%E5%90%88%E2%80%9D%E7%9A%84%E4%B8%BB%E8%A6%81%E6%89%8B%E6%AE%B5%E3%80%82"><span class="nav-number">1.3.1.</span> <span class="nav-text">剪枝是决策树学习算法对付“过拟合”的主要手段。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E4%B8%8E%E7%BC%BA%E5%A4%B1%E5%80%BC"><span class="nav-number">1.4.</span> <span class="nav-text">连续与缺失值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">1.4.1.</span> <span class="nav-text">连续值处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">1.4.2.</span> <span class="nav-text">缺失值处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%8F%98%E9%87%8F%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-number">1.5.</span> <span class="nav-text">多变量决策树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.5.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%8F%98%E9%87%8F%E5%86%B3%E7%AD%96%E6%A0%91%E5%B0%B1%E6%98%AF%E8%83%BD%E5%AE%9E%E7%8E%B0%E8%BF%99%E6%A0%B7%E7%9A%84%E2%80%9C%E6%96%9C%E5%88%92%E5%88%86%E2%80%9D%E7%94%9A%E8%87%B3%E6%9B%B4%E5%A4%8D%E6%9D%82%E5%88%92%E5%88%86%E7%9A%84%E5%86%B3%E7%AD%96%E6%A0%91%E3%80%82%E5%9B%A0%E6%AD%A4%E4%B9%9F%E7%A7%B0%E2%80%9C%E6%96%9C%E5%86%B3%E7%AD%96%E6%A0%91%E2%80%9D%E3%80%82"><span class="nav-number">1.5.2.</span> <span class="nav-text">多变量决策树就是能实现这样的“斜划分”甚至更复杂划分的决策树。因此也称“斜决策树”。</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Florence"
+      src="/images/avatar.JPG">
+  <p class="site-author-name" itemprop="name">Florence</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Florence</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">35k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">32 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

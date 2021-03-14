@@ -20,23 +20,29 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。">
+  <meta name="description" content="本文绘制了《基于深度学习的开放领域对话系统研究综述》一文的思维导图；针对检索式开放领域对话系统的相关知识进行了梳理并记录了学习笔记，以便日后查看和复习。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bert模型是否适用于文本相似度计算任务">
-<meta property="og:url" content="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/index.html">
+<meta property="og:title" content="检索式开放领域对话系统研究综述梳理笔记">
+<meta property="og:url" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Florence&#39;s Blog">
-<meta property="og:description" content="随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。">
+<meta property="og:description" content="本文绘制了《基于深度学习的开放领域对话系统研究综述》一文的思维导图；针对检索式开放领域对话系统的相关知识进行了梳理并记录了学习笔记，以便日后查看和复习。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png">
-<meta property="og:image" content="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C2.png">
-<meta property="article:published_time" content="2020-12-06T03:25:29.000Z">
-<meta property="article:modified_time" content="2020-12-06T06:05:48.845Z">
+<meta property="og:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE">
+<meta property="og:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p1.png">
+<meta property="og:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p2.png">
+<meta property="og:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p3.png">
+<meta property="og:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p4.png">
+<meta property="og:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p5.png">
+<meta property="og:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p6.png">
+<meta property="og:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p7.png">
+<meta property="article:published_time" content="2021-03-14T08:29:04.000Z">
+<meta property="article:modified_time" content="2021-03-14T08:39:14.107Z">
 <meta property="article:author" content="Florence">
-<meta property="article:tag" content="文本相似度计算">
+<meta property="article:tag" content="开放领域对话系统">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png">
+<meta name="twitter:image" content="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE">
 
-<link rel="canonical" href="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/">
+<link rel="canonical" href="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/">
 
 
 <script id="page-configurations">
@@ -49,7 +55,7 @@
   };
 </script>
 
-  <title>Bert模型是否适用于文本相似度计算任务 | Florence's Blog</title>
+  <title>检索式开放领域对话系统研究综述梳理笔记 | Florence's Blog</title>
   
 
 
@@ -187,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.JPG">
@@ -200,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Bert模型是否适用于文本相似度计算任务
+          检索式开放领域对话系统研究综述梳理笔记
         </h1>
 
         <div class="post-meta">
@@ -211,7 +217,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-12-06 11:25:29 / 修改时间：14:05:48" itemprop="dateCreated datePublished" datetime="2020-12-06T11:25:29+08:00">2020-12-06</time>
+              <time title="创建时间：2021-03-14 16:29:04 / 修改时间：16:39:14" itemprop="dateCreated datePublished" datetime="2021-03-14T16:29:04+08:00">2021-03-14</time>
             </span>
 
           <br>
@@ -220,7 +226,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>84</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -239,40 +245,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型都不适合非监督任务。</p>
+        <p>本文绘制了《基于深度学习的开放领域对话系统研究综述》一文的思维导图；针对检索式开放领域对话系统的相关知识进行了梳理并记录了学习笔记，以便日后查看和复习。</p>
 <a id="more"></a>
 
-<h3 id="Bert模型是否适用于文本相似度计算任务"><a href="#Bert模型是否适用于文本相似度计算任务" class="headerlink" title="Bert模型是否适用于文本相似度计算任务"></a>Bert模型是否适用于文本相似度计算任务</h3><p>先说结论：我的这个文本相似度计算任务是通过网络爬虫获取的数据，是没有相似度标签的（比如0/1表示不相似/相似），是无监督训练。对于这种情况，不能够通过fine-tune（指的是用别人训练好的模型，即预训练模型，加上我们自己的数据，来训练新的模型）进行微调，用Bert提取句向量再通过余弦函数计算相似度的效果并不好甚至不如用词嵌入模型Glove的效果好。</p>
-<p>本文主要参考了2019年8月底发表在EMNLP会议上的一篇论文：</p>
-<blockquote>
-<p>Reimers N, Gurevych I. Sentence-bert: Sentence embeddings using siamese bert-networks[J]. arXiv preprint arXiv:1908.10084, 2019.</p>
-</blockquote>
-<p>论文中指出随着2018年底Bert的面世，NLP进入了预训练模型的时代。各大预训练模型如GPT-2，Robert，XLNet，Transformer-XL，Albert，T5等等层数不穷，但是几乎大部分的预训练模型均不适合语义相似度搜索，也不适合非监督任务。</p>
-<p>解决聚类和语义相似度计算的一种常见方法是将每个句子映射到一个向量空间，使得语义相似的句子很接近。有人会尝试将整个句子输入预训练模型中，得到该句的句向量，然后作为句子的句向量表示，但是在这篇论文中指出这样得到的句向量表达语义信息的能力并不好，也就是说，两个相似的句子，得到的句向量可能会有很大的差别。</p>
-<p>文中还列出了对比实验结果，这里我们主要关注<strong>无监督</strong>训练结果：</p>
-<h6 id="无监督训练"><a href="#无监督训练" class="headerlink" title="无监督训练"></a>无监督训练</h6><ul>
-<li><p>文中的评测采用的是STS 2012-2016五年的任务数据、STS benchmark数据(2017年构建)、SICK-Relatedness数据，这些数据集都是标好label的句子对，label表示句子之间的相互关系，范围为0~5（0是没什么关系，5表示句子非常相近）。</p>
-</li>
-<li><p>无监督评测不采用这些数据集的任何训练数据，直接用训练好的模型得到句向量+余弦函数来计算句子间的相似度，然后通过斯皮尔曼等级相关系数来衡量模型的优劣。实验结果如下：</p>
-<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C.png" alt="论文结果"></p>
-<p>结果显示直接采用BERT的输出结果，效果并不好，甚至不如GloVe嵌入向量的效果好；后两栏表示采用本文的孪生网络在NLI数据集上fine-tune后的模型效果，会明显要好很多，但是SBERT和SRoBERTa差异不大。</p>
-<p><strong>注意：</strong></p>
-<ul>
-<li>CLS和avg是本文尝试用Bert模型得到句向量的不同方法：CLS是以第一个特征位置向量作为句向量；avg是取输出层的所有字向量的平均值作为句向量。</li>
-<li>InferSent是一种句子embeddings方法，它为英语句子提供语理解。</li>
-<li>Universal Sentence Encoder：通用句子编码器。</li>
-<li>base/large：是Bert模型的两种类型，一个是12层Transformer，一个是24层Transformer。</li>
-</ul>
-</li>
-</ul>
-<h6 id="有监督训练"><a href="#有监督训练" class="headerlink" title="有监督训练"></a>有监督训练</h6><ul>
-<li><p>但另一方面，如果是有监督训练，经过fine-tune，预训练模型的效果都有很大的提升，其中Bert达到了最好的效果：</p>
-<p><img src="/2020/12/06/Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1/%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%9C2.png" alt="论文结果2"></p>
-<ul>
-<li>有监督STS数据集采用的是STS benchmark（简称STSb）数据集，就是上面提到的2017年抽取构建的，是当前比较流行的有监督STS数据集。它主要来自三个方面：字幕、新闻、论坛，包含8,628个句子对，训练集5,749，验证集1,500，测试集1,379。BERT将句子对同时输入网络，最后再接一个简单的回归模型作为输出，目前在此数据集上取得了最好的效果。</li>
-</ul>
-</li>
-</ul>
+<h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE" alt="思维导图"></p>
+<h3 id="学习笔记"><a href="#学习笔记" class="headerlink" title="学习笔记"></a>学习笔记</h3><p><img src="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p1.png" alt="学习笔记1"></p>
+<p><img src="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p2.png" alt="学习笔记2"></p>
+<p><img src="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p3.png" alt="学习笔记3"></p>
+<p><img src="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p4.png" alt="学习笔记4"></p>
+<p><img src="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p5.png" alt="学习笔记5"></p>
+<p><img src="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p6.png" alt="学习笔记6"></p>
+<p><img src="/2021/03/14/%E6%A3%80%E7%B4%A2%E5%BC%8F%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0%E6%A2%B3%E7%90%86%E7%AC%94%E8%AE%B0/p7.png" alt="学习笔记7"></p>
 
     </div>
 
@@ -283,7 +266,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97/" rel="tag"><i class="fa fa-tag"></i> 文本相似度计算</a>
+              <a href="/tags/%E5%BC%80%E6%94%BE%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 开放领域对话系统</a>
           </div>
 
         
@@ -292,13 +275,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/06/NER%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84HMM%E3%80%81CRF%E5%92%8CBi-LSTM-CRF%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/" rel="prev" title="命名实体识别任务中HMM、CRF、Bi-LSTM+CRF模型详解">
-      <i class="fa fa-chevron-left"></i> 命名实体识别任务中HMM、CRF、Bi-LSTM+CRF模型详解
+    <a href="/2021/03/14/%E8%A5%BF%E7%93%9C%E4%B9%A6%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" rel="prev" title="西瓜书第四章思维导图">
+      <i class="fa fa-chevron-left"></i> 西瓜书第四章思维导图
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/06/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%B3%BB%E7%BB%9F/" rel="next" title="聊天机器人系统">
-      聊天机器人系统 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -357,7 +337,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bert%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">Bert模型是否适用于文本相似度计算任务</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E8%AE%AD%E7%BB%83"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">无监督训练</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%9C%89%E7%9B%91%E7%9D%A3%E8%AE%AD%E7%BB%83"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">有监督训练</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text">思维导图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">2.</span> <span class="nav-text">学习笔记</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
